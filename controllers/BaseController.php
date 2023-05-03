@@ -6,7 +6,6 @@ class BaseController {
 	
 	protected Database $db;
 	
-	
 	public function __construct(Database $db) {
 		session_start();
 		
@@ -71,3 +70,4 @@ class BaseController {
 		return $errorMessage;
 	}
 }
+

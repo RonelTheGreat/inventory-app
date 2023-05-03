@@ -11,3 +11,4 @@
 <?php include_once $view; ?>
 
 <?php include_once ROOT_DIR . '/views/includes/bottom.php' ?>
+

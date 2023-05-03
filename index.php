@@ -21,3 +21,4 @@ $controllerInstance->setViewLayout('default');
 $controllerInstance->setViewDirectoryName($router->getPage());
 $handler = $controllerInstance->getHandler($router->getAction(), $_SERVER['REQUEST_METHOD']);
 call_user_func([$controllerInstance, $handler]);
+

@@ -16,3 +16,4 @@
 <div>
 	<a href="/index.php?p=categories&action=add">Add Category</a>
 </div>
+

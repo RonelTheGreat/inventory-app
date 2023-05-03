@@ -15,3 +15,4 @@
 <div>
 	<a href="/index.php?p=products&action=add">Add Product</a>
 </div>
+

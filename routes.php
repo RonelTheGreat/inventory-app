@@ -12,3 +12,4 @@ return [
 		'handler' => CONTROLLER_DIR . '/Categories.php',
 	]
 ];
+
