@@ -9,7 +9,12 @@ class Products extends BaseController {
 	}
 	
 	public function addGet() {
-		$this->renderView('add');
+		// Get all categories.
+		$categories = $this->db->selectAll('categories');
+		
+		$this->renderView('add', [
+			'categories' => $categories
+		]);
 	}
 	
 	public function addPost() {
