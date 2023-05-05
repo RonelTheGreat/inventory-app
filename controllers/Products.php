@@ -20,6 +20,8 @@ class Products extends BaseController {
 	public function addPost() {
 		// Validate form inputs.
 		$name = $_POST['name'] ?? '';
+		$categoryId = $_POST['category'] ?? '';
+		$description = $_POST['description'] ?? '';
 		
 		if (trim($name) == '') {
 			$this->setErrorMessage('Please enter product name');
@@ -30,9 +32,16 @@ class Products extends BaseController {
 			exit;
 		}
 		
-		$newProductId = $this->db->insert('products', ['name' => $name]);
+		$newProductId = $this->db->insert(
+			'products',
+			[
+				'name' => $name,
+				'category_id' => $categoryId,
+				'description' => $description,
+			]
+		);
 		
-		$this->setSuccessMessage('The product has been successfully added');
+		$this->setSuccessMessage('The product has been added successfully!');
 		
 		$this->redirect([
 			'p' => 'products',
@@ -63,9 +72,13 @@ class Products extends BaseController {
 			]);
 			exit;
 		}
+
+		// Get all categories.
+		$categories = $this->db->selectAll('categories');
 		
 		$this->renderView('edit', [
 			'product' => $product,
+			'categories' => $categories,
 		]);
 	}
 	
@@ -109,13 +122,15 @@ class Products extends BaseController {
 			'products',
 			[
 				'name' => $_POST['name'],
+				'category_id' => $_POST['category'],
+				'description' => $_POST['description'] ?? '',
 			],
 			[
 				'id' => $product['id'],
 			]
 		);
 		
-		$this->setSuccessMessage('The product has been edited successfully.');
+		$this->setSuccessMessage('The product has been edited successfully!');
 		
 		$this->redirect([
 			'p' => 'products',
