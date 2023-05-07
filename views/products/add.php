@@ -13,19 +13,24 @@
 
 		<div>
 			<div class="mb-3">
-				<input type="text" name="name" placeholder="Product Name" class="w-full custom-input">
+				<input type="text" name="name" placeholder="Product Name" value="<?= $request['old']['name'] ?? ''; ?>" class="w-full custom-input">
 			</div>
 			
 			<div class="mb-3">
+				<?php $selectedId = $request['old']['category'] ?? 0; ?>
 				<select name="category" class="w-full custom-input">
 					<?php foreach ($categoryOptions as $id => $name) : ?>
-						<option value="<?= $id ?>"><?= $name; ?></option>
+						<option value="<?= $id ?>" <?= $selectedId == $id ? 'selected' : ''; ?>><?= $name; ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
 
 			<div class="mb-3">
-				<input type="text" name="description" placeholder="Description" class="w-full custom-input">
+				<input type="text" name="description" placeholder="Description" value="<?= $request['old']['description'] ?? ''; ?>" class="w-full custom-input">
+			</div>
+
+			<div class="mb-3">
+				<input type="number" name="price" placeholder="Price" step="0.01" value="<?= $request['old']['price'] ?? ''; ?>" class="w-full custom-input">
 			</div>
 			
 			<div class="flex flex-row items-center justify-end mt-4">

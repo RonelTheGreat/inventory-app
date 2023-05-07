@@ -30,6 +30,10 @@
 			<input type="text" name="description" placeholder="Description" value="<?= $product['description']; ?>" class="w-full custom-input">
 		</div>
 
+		<div class="mb-3">
+			<input type="number" name="price" placeholder="Price" step="0.01" value="<?= $request['old']['price'] ?? $product['price']; ?>" class="w-full custom-input">
+		</div>
+
 		<div class="flex flex-row items-center justify-end">
 			<button type="submit" class="custom-primary-button">Save</button>
 		</div>
