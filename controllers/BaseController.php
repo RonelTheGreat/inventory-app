@@ -3,13 +3,17 @@
 class BaseController {
 	private string $layoutDirectory;
 	private string $viewsDirectory;
+
+	protected array $validationRules;
 	
 	protected Database $db;
+	protected Request $request;
 	
-	public function __construct(Database $db) {
+	public function __construct(Database $db, Request $request) {
 		session_start();
 		
 		$this->db = $db;
+		$this->request = $request;
 	}
 	
 	public function setViewDirectoryName(string $viewDirectoryName) {
@@ -31,7 +35,9 @@ class BaseController {
 	protected function renderView(string $viewName, array $data = []) {
 		$errorMessage = $this->getErrorMessage();
 		$successMessage = $this->getSuccessMessage();
-		
+
+		$request['old'] = $this->request->getOld();
+
 		extract($data, EXTR_OVERWRITE);
 		
 		$view = $this->viewsDirectory . '/' . $viewName . '.php';
@@ -68,6 +74,14 @@ class BaseController {
 		unset($_SESSION['successMessage']);
 		
 		return $errorMessage;
+	}
+
+	protected function setValidationRules(array $rules) {
+		$this->validationRules = $rules;
+	}
+
+	protected function getValidationRules(): array {
+		return $this->validationRules;
 	}
 }
 
