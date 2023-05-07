@@ -55,12 +55,18 @@ class Request {
 					break;
 				}
 
-				case 'integer': {
+				case 'integer':
+				case 'float': {
 					$trimmedValue = trim($value);
 
 					// Not required. Always set value to zero if not a valid number.
 					if (!$rule['required']) {
-						$validatedRequest[$name] = is_numeric($trimmedValue) ? intval($trimmedValue) : 0;
+						$newValue = 0;
+						if (is_numeric($trimmedValue)) {
+							$newValue = $rule['type'] == 'integer' ? intval($trimmedValue) : floatval($trimmedValue);
+						}
+
+						$validatedRequest[$name] = $newValue;
 						break;
 					}
 
@@ -77,13 +83,13 @@ class Request {
 					}
 
 					// Value should be greater than zero.
-					$intValue = intval($trimmedValue);
-					if (isset($rule['greaterThanZero']) && $intValue <= 0) {
+					$newValue = $rule['type'] == 'integer' ? intval($trimmedValue) : floatval($trimmedValue);
+					if (isset($rule['greaterThanZero']) && $newValue <= 0) {
 						$this->setValidationErrorMessage($rule['errorMessages']['greaterThanZero']);
 						return false;
 					}
 
-					$validatedRequest[$name] = $intValue;
+					$validatedRequest[$name] = $newValue;
 					break;
 				}
 			}
