@@ -14,4 +14,5 @@ CREATE TABLE categories (
 
 ALTER TABLE products ADD COLUMN category_id INT UNSIGNED AFTER id;
 ALTER TABLE products ADD COLUMN `description` VARCHAR(255) AFTER `name`;
+ALTER TABLE products ADD COLUMN price DECIMAL(19, 2) NOT NULL DEFAULT 0 AFTER `description`;
 
