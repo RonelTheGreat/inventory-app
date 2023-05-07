@@ -31,7 +31,17 @@ class Products extends BaseController {
 				'type' => 'string',
 				'required' => false,
 			],
-
+			[
+				'name' => 'price',
+				'type' => 'float',
+				'required' => true,
+				'greaterThanZero' => true,
+				'errorMessages' => [
+					'isRequired' => 'Product price is required.',
+					'isEmpty' => 'Please enter product price.',
+					'greaterThanZero' => 'Price should be greater than zero.',
+				]
+			]
 		]);
 	}
 
@@ -66,6 +76,7 @@ class Products extends BaseController {
 				'name' => $validated['name'],
 				'category_id' => $validated['category'],
 				'description' => $validated['description'],
+				'price' => $validated['price'],
 			]
 		);
 		
@@ -155,6 +166,7 @@ class Products extends BaseController {
 				'name' => $validated['name'],
 				'category_id' => $validated['category'],
 				'description' => $validated['description'],
+				'price' => $validated['price'],
 			],
 			[
 				'id' => $product['id'],
