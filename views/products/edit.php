@@ -12,14 +12,15 @@
 		<?php include_once ROOT_DIR . '/views/includes/alert-success.php'; ?>
 
 		<div class="mb-3">
-			<input type="text" name="name" value="<?= $product['name']; ?>" class="w-full custom-input">
+			<input type="text" name="name" value="<?= $request['old']['name'] ?? $product['name']; ?>" class="w-full custom-input">
 		</div>
 
 		<div class="mb-3">
+			<?php $selectedId = $request['old']['category'] ?? $product['category_id']; ?>
 			<select name="category" class="w-full custom-input">
-				<?php foreach ($categories as $category) : ?>
-					<option value="<?= $category['id']; ?>" <?= $category['id'] === $product['category_id'] ? 'selected': ''; ?>>
-						<?= $category['name']; ?>
+				<?php foreach ($categoryOptions as $id => $name) : ?>
+					<option value="<?= $id; ?>" <?= $selectedId == $id ? 'selected' : '' ?>>
+						<?= $name; ?>
 					</option>
 				<?php endforeach; ?>
 			</select>
