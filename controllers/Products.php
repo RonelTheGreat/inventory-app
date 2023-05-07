@@ -1,7 +1,40 @@
 <?php
 
 class Products extends BaseController {
-	
+
+	public function __construct(Database $db, Request $request)
+	{
+		parent::__construct($db, $request);
+
+		$this->setValidationRules([
+			[
+				'name' => 'name',
+				'type' => 'string',
+				'required' => true,
+				'errorMessages' => [
+					'isRequired' => 'Product name is required.',
+					'isEmpty' => 'Please enter product name.',
+				],
+			],
+			[
+				'name' => 'category',
+				'type' => 'integer',
+				'required' => false,
+				'errorMessages' => [
+					'invalidType' => 'Selected category is invalid.',
+					'isEmpty' => 'Please select a category.',
+					// 'greaterThanZero' => 'Please select category',
+				],
+			],
+			[
+				'name' => 'description',
+				'type' => 'string',
+				'required' => false,
+			],
+
+		]);
+	}
+
 	public function listGet() {
 		$this->renderView('list', [
 			'products' => $this->db->selectAll('products'),
@@ -9,35 +42,30 @@ class Products extends BaseController {
 	}
 	
 	public function addGet() {
-		// Get all categories.
-		$categories = $this->db->selectAll('categories');
-		
 		$this->renderView('add', [
-			'categories' => $categories
+			'categoryOptions' => $this->getCategoryOptions()
 		]);
 	}
 	
 	public function addPost() {
 		// Validate form inputs.
-		$name = $_POST['name'] ?? '';
-		$categoryId = $_POST['category'] ?? '';
-		$description = $_POST['description'] ?? '';
-		
-		if (trim($name) == '') {
-			$this->setErrorMessage('Please enter product name');
+		$validated = $this->request->validate($this->getValidationRules());
+
+		if (!$validated) {
+			$this->setErrorMessage($this->request->getValidationErrorMessage());
 			$this->redirect([
 				'p' => 'products',
 				'action' => 'add'
 			]);
 			exit;
 		}
-		
+
 		$newProductId = $this->db->insert(
 			'products',
 			[
-				'name' => $name,
-				'category_id' => $categoryId,
-				'description' => $description,
+				'name' => $validated['name'],
+				'category_id' => $validated['category'],
+				'description' => $validated['description'],
 			]
 		);
 		
@@ -51,8 +79,10 @@ class Products extends BaseController {
 	}
 	
 	public function editGet() {
+		$productId = $this->request->get('id');
+
 		// Check if id is valid.
-		if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+		if (!is_numeric($_GET['id'])) {
 			$this->setErrorMessage('Product not found.');
 			$this->redirect([
 				'p' => 'products',
@@ -61,7 +91,7 @@ class Products extends BaseController {
 		}
 		
 		// Fetch product.
-		$product = $this->db->selectOne('products', ['id' => $_GET['id']]);
+		$product = $this->db->selectOne('products', ['id' => $productId]);
 		
 		// Check if product exists.
 		if ($product === false) {
@@ -72,19 +102,18 @@ class Products extends BaseController {
 			]);
 			exit;
 		}
-
-		// Get all categories.
-		$categories = $this->db->selectAll('categories');
 		
 		$this->renderView('edit', [
 			'product' => $product,
-			'categories' => $categories,
+			'categoryOptions' => $this->getCategoryOptions(),
 		]);
 	}
 	
 	public function editPost() {
+		$productId = $this->request->get('id');
+
 		// Check if id is valid.
-		if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+		if (!is_numeric($productId)) {
 			$this->setErrorMessage('Product not found.');
 			$this->redirect([
 				'p' => 'products',
@@ -92,20 +121,22 @@ class Products extends BaseController {
 			]);
 			exit;
 		}
-		
-		// Validate name field.
-		if (!isset($_POST['name']) || trim($_POST['name']) == '') {
-			$this->setErrorMessage('Please enter product name.');
+
+		// Validate form inputs.
+		$validated = $this->request->validate($this->getValidationRules());
+
+		if (!$validated) {
+			$this->setErrorMessage($this->request->getValidationErrorMessage());
 			$this->redirect([
 				'p' => 'products',
 				'action' => 'edit',
-				'id' => $_GET['id'],
+				'id' => $productId
 			]);
 			exit;
 		}
 		
 		// Fetch product.
-		$product = $this->db->selectOne('products', ['id' => $_GET['id']]);
+		$product = $this->db->selectOne('products', ['id' => $productId]);
 		
 		// Check if product exists.
 		if ($product === false) {
@@ -121,9 +152,9 @@ class Products extends BaseController {
 		$this->db->update(
 			'products',
 			[
-				'name' => $_POST['name'],
-				'category_id' => $_POST['category'],
-				'description' => $_POST['description'] ?? '',
+				'name' => $validated['name'],
+				'category_id' => $validated['category'],
+				'description' => $validated['description'],
 			],
 			[
 				'id' => $product['id'],
@@ -148,6 +179,16 @@ class Products extends BaseController {
 			'p' => 'products',
 			'action' => 'list',
 		]);
+	}
+
+	protected function getCategoryOptions() {
+		$categoryOptions = ['0' => '-- Select Category --'];
+		$categories = $this->db->selectAll('categories');
+		foreach ($categories as $category) {
+			$categoryOptions[$category['id']] = $category['name'];
+		}
+
+		return $categoryOptions;
 	}
 }
 
