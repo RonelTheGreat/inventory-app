@@ -11,11 +11,13 @@
 		<?php include_once ROOT_DIR . '/views/includes/alert-error.php'; ?>
 		<?php include_once ROOT_DIR . '/views/includes/alert-success.php'; ?>
 
-		<div class="mb-3">
+		<div class="mb-4">
+			<label class="block text-slate-500 text-xs font-medium uppercase mb-1">Name</label>
 			<input type="text" name="name" value="<?= $request['old']['name'] ?? $product['name']; ?>" class="w-full custom-input">
 		</div>
 
-		<div class="mb-3">
+		<div class="mb-4">
+			<label class="block text-slate-500 text-xs font-medium uppercase mb-1">Category</label>
 			<?php $selectedId = $request['old']['category'] ?? $product['category_id']; ?>
 			<select name="category" class="w-full custom-input">
 				<?php foreach ($categoryOptions as $id => $name) : ?>
@@ -26,12 +28,14 @@
 			</select>
 		</div>
 
-		<div class="mb-3">
-			<input type="text" name="description" placeholder="Description" value="<?= $product['description']; ?>" class="w-full custom-input">
+		<div class="mb-4">
+			<label class="block text-slate-500 text-xs font-medium uppercase mb-1">Description</label>
+			<input type="text" name="description" value="<?= $product['description']; ?>" class="w-full custom-input">
 		</div>
 
-		<div class="mb-3">
-			<input type="number" name="price" placeholder="Price" step="0.01" value="<?= $request['old']['price'] ?? $product['price']; ?>" class="w-full custom-input">
+		<div class="mb-4">
+			<label class="block text-slate-500 text-xs font-medium uppercase mb-1">Price</label>
+			<input type="number" name="price" step="0.01" value="<?= $request['old']['price'] ?? $product['price']; ?>" class="w-full custom-input">
 		</div>
 
 		<div class="flex flex-row items-center justify-end">
