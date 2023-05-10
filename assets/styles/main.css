@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer components {
+    .custom-input-label {
+        @apply block text-slate-500 text-xs font-medium uppercase mb-1;
+    }
+
     .custom-input {
         @apply px-2 py-1 border-solid border-2 border-slate-400 rounded-md hover:border-slate-900 focus:outline-none
         focus:ring-2 focus:ring-offset-2 focus:ring-slate-300;
