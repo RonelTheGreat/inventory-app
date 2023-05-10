@@ -12,12 +12,12 @@
 		<?php include_once ROOT_DIR . '/views/includes/alert-success.php'; ?>
 
 		<div class="mb-4">
-			<label class="block text-slate-500 text-xs font-medium uppercase mb-1">Name</label>
+			<label class="custom-input-label">Name</label>
 			<input type="text" name="name" value="<?= $request['old']['name'] ?? $product['name']; ?>" class="w-full custom-input">
 		</div>
 
 		<div class="mb-4">
-			<label class="block text-slate-500 text-xs font-medium uppercase mb-1">Category</label>
+			<label class="custom-input-label">Category</label>
 			<?php $selectedId = $request['old']['category'] ?? $product['category_id']; ?>
 			<select name="category" class="w-full custom-input">
 				<?php foreach ($categoryOptions as $id => $name) : ?>
@@ -29,12 +29,12 @@
 		</div>
 
 		<div class="mb-4">
-			<label class="block text-slate-500 text-xs font-medium uppercase mb-1">Description</label>
-			<input type="text" name="description" value="<?= $product['description']; ?>" class="w-full custom-input">
+			<label class="custom-input-label">Description</label>
+			<textarea name="description" rows="3" class="w-full custom-input"><?= $request['old']['description'] ?? $product['description']; ?></textarea>
 		</div>
 
 		<div class="mb-4">
-			<label class="block text-slate-500 text-xs font-medium uppercase mb-1">Price</label>
+			<label class="custom-input-label">Price</label>
 			<input type="number" name="price" step="0.01" value="<?= $request['old']['price'] ?? $product['price']; ?>" class="w-full custom-input">
 		</div>
 
