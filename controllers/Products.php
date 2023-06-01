@@ -41,6 +41,22 @@ class Products extends BaseController {
 					'isEmpty' => 'Please enter product price.',
 					'greaterThanZero' => 'Price should be greater than zero.',
 				]
+			],
+			[
+				'name' => 'existing_images',
+				'type' => 'array',
+				'required' => false,
+				'errorMessages' => [
+					'invalidType' => 'Invalid images.',
+				]
+			],
+			[
+				'name' => 'new_images',
+				'type' => 'array',
+				'required' => false,
+				'errorMessages' => [
+					'invalidType' => 'Invalid images.',
+				]
 			]
 		]);
 	}
@@ -79,6 +95,19 @@ class Products extends BaseController {
 				'price' => $validated['price'],
 			]
 		);
+
+		// Save images.
+		if (isset($validated['new_images'])) {
+			foreach ($validated['new_images'] as $imageUrl) {
+				$this->db->insert(
+					'product_images',
+					[
+						'product_id' => $newProductId,
+						'url' => $imageUrl,
+					]
+				);
+			}
+		}
 		
 		$this->setSuccessMessage('The product has been added successfully!');
 		
@@ -113,6 +142,9 @@ class Products extends BaseController {
 			]);
 			exit;
 		}
+
+		// Fetch images.
+		$product['images'] = $this->db->selectAll('product_images', ['product_id' => $product['id']]);
 		
 		$this->renderView('edit', [
 			'product' => $product,
@@ -172,7 +204,38 @@ class Products extends BaseController {
 				'id' => $product['id'],
 			]
 		);
-		
+
+		// Delete images.
+		if (isset($validated['existing_images'])) {
+			$existingImages = $this->db->selectAll(
+				'product_images',
+				[ 'product_id' => $product['id'], ],
+				[ 'id', ]
+			);
+
+			$reqExistingImageIds = array_keys($validated['existing_images']);
+
+			foreach ($existingImages as $image)
+			{
+				if (!in_array($image['id'], $reqExistingImageIds)) {
+					$this->db->delete('product_images', [ 'id' => $image['id'], ]);
+				}
+			}
+		}
+
+		// Add new images.
+		if (isset($validated['new_images']) && !empty($validated['new_images'])) {
+			foreach ($validated['new_images'] as $imageUrl) {
+				$this->db->insert(
+					'product_images',
+					[
+						'product_id' => $product['id'],
+						'url' => $imageUrl,
+					]
+				);
+			}
+		}
+
 		$this->setSuccessMessage('The product has been edited successfully!');
 		
 		$this->redirect([
