@@ -92,6 +92,24 @@ class Request {
 					$validatedRequest[$name] = $newValue;
 					break;
 				}
+
+				case 'array': {
+					// Not a valid array.
+					if ($rule['required'] && !is_array($value)) {
+						$this->setValidationErrorMessage($rule['errorMessages']['invalidType']);
+						return false;
+					}
+
+					$values = is_array($value) ? $value: [];
+					$items = [];
+					foreach ($values as $key => $item) {
+						// Sanitize.
+						$items[$key] = trim($item);
+					}
+					$validatedRequest[$name] = $items;
+
+					break;
+				}
 			}
 		}
 
