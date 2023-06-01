@@ -36,7 +36,9 @@
 			<input type="number" name="price" step="0.01" value="<?= $request['old']['price'] ?? ''; ?>" class="w-full custom-input">
 		</div>
 
-		<div class="flex flex-row items-center justify-end mt-4">
+		<?php include_once ROOT_DIR . '/views/includes/image-url-uploader.php' ?>
+
+		<div class="flex flex-row items-center justify-end mt-8">
 			<button type="submit"class="custom-primary-button">Add product</button>
 		</div>
 	</form>
