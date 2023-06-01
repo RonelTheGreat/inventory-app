@@ -16,6 +16,13 @@
 	<div class="flex flex-row flex-wrap items-center" data-images-container></div>
 </div>
 
+<dialog data-image-preview>
+	<div data-image-container></div>
+	<div class="flex justify-end">
+		<button type="button" class="custom-secondary-button" data-close-dialog>Close</button>
+	</div>
+</dialog>
+
 <script>
 	<?php if (isset($product['images'])): ?>
 		const existingImages = <?= json_encode($product['images']) ?>;
@@ -49,10 +56,13 @@
 	});
 
 	// Pre-populate images.
-	createImagePreview(existingImages);
+	if (typeof existingImages !== 'undefined') {
+		createImagePreview(existingImages);
+	}
 
 	function createImagePreview (images) {
 		images.forEach((image) => {
+			const imageLinkWrapper = document.createElement('a');
 			const imageContainer = document.createElement('div');
 			const deleteButton = document.createElement('button');
 			const hiddenInput = document.createElement('input');
@@ -66,6 +76,12 @@
 			imageContainer.style.backgroundPosition = 'center';
 			imageContainer.style.backgroundRepeat = 'no-repeat';
 			imageContainer.style.backgroundSize = 'cover';
+
+			// Set image-link wrapper's url and other attributes.
+			imageLinkWrapper.setAttribute('href', image.url);
+			imageLinkWrapper.setAttribute('target', '_blank');
+			// Add click event listener.
+			imageLinkWrapper.addEventListener('click', openImagePreview);
 
 			// Add styles and text to delete button.
 			deleteButton.classList.add('absolute', 'top-0.5', 'right-0.5', 'bg-red-600', 'font-medium', 'text-xs', 'text-slate-50', 'px-2', 'py-1', 'rounded', 'hover:bg-red-700');
@@ -84,8 +100,11 @@
 			// Append hidden input to image container.
 			imageContainer.appendChild(hiddenInput);
 
-			// Append individual image container to images container.
-			imagesContainer.appendChild(imageContainer);
+			// Wrap image container in a link.
+			imageLinkWrapper.appendChild(imageContainer);
+
+			// Append individual image to images container.
+			imagesContainer.appendChild(imageLinkWrapper);
 		});
 	}
 
@@ -104,5 +123,33 @@
 		e.preventDefault();
 
 		e.target.parentElement.remove();
+	}
+
+	function openImagePreview(e) {
+		e.preventDefault();
+
+		// Prevent dialog from opening if the click originated from the delete button.
+		if (e.target.nodeName.toLowerCase() === 'button') return;
+
+		const imageContainer = document.querySelector('div[data-image-container]');
+		const closeButton = document.querySelector('button[data-close-dialog]');
+		const dialog = document.querySelector('dialog[data-image-preview]');
+		const imageUrl = this.getAttribute('href');
+
+		// Add styles to dialog.
+		dialog.classList.add('rounded-md', 'shadow-lg');
+
+		// Add styles to image container.
+		imageContainer.style.width = '30rem';
+		imageContainer.style.height = '30rem';
+		// Add image as a background.
+		imageContainer.style.backgroundImage = `url(${imageUrl})`;
+		imageContainer.style.backgroundPosition = 'center';
+		imageContainer.style.backgroundRepeat = 'no-repeat';
+		imageContainer.style.backgroundSize = 'contain';
+
+		closeButton.addEventListener('click', () => dialog.close());
+
+		dialog.showModal();
 	}
 </script>
