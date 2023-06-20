@@ -78,7 +78,8 @@ class Products extends BaseController {
 	
 	public function addGet() {
 		$this->renderView('add', [
-			'categoryOptions' => $this->getCategoryOptions()
+			'categoryOptions' => $this->getCategoryOptions(),
+			'sizeOptions' => $this->getSizeOptions(),
 		]);
 	}
 	
@@ -102,6 +103,7 @@ class Products extends BaseController {
 				'category_id' => $validated['category'],
 				'description' => $validated['description'],
 				'price' => $validated['price'],
+				'size' => $validated['size'],
 			]
 		);
 
