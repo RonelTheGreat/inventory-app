@@ -38,3 +38,4 @@ VALUES ('xs', 'Extra Small', 1),
        ('fs', 'Free Size', 7);
 
 ALTER TABLE products ADD COLUMN size VARCHAR(16) NOT NULL DEFAULT 'fs' AFTER price;
+ALTER TABLE products ADD COLUMN stocks INT UNSIGNED NOT NULL DEFAULT 0 AFTER size;

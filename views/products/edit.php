@@ -50,7 +50,7 @@
 
 			<div class="w-1/2">
 				<label class="custom-input-label">Stocks</label>
-				<input type="number" name="stocks" value="" class="w-full custom-input">
+				<input type="number" name="stocks" value="<?= $request['old']['stocks'] ?? $product['stocks']; ?>" class="w-full custom-input">
 			</div>
 		</div>
 
