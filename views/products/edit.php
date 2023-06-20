@@ -59,8 +59,6 @@
 			<textarea name="description" rows="3" class="w-full custom-input"><?= $request['old']['description'] ?? $product['description']; ?></textarea>
 		</div>
 
-
-
 		<?php include_once ROOT_DIR . '/views/includes/image-url-uploader.php' ?>
 
 		<div class="flex flex-row items-center justify-end">
