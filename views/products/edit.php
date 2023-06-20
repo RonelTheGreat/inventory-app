@@ -1,4 +1,4 @@
-<div class="w-2/5 my-4">
+<div class="grow pt-8 pr-8">
 	<h1 class="text-2xl mb-10">Edit Product - <?= $product['name']; ?> </h1>
 
 	<div class="mb-10">

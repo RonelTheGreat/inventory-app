@@ -1,5 +1,6 @@
-<div class="w-2/5 my-4">
+<div class="grow pt-8 pr-8">
 	<h1 class="text-2xl mb-10">Add Category</h1>
+
 	<div class="mb-10">
 		<a href="/index.php?p=categories&action=list" class="custom-secondary-button">
 			&larr; Back to list
