@@ -1,5 +1,5 @@
-<div>
-	<h1>Products</h1>
+<div class="grow pt-8">
+	<h1 class="text-2xl">Products</h1>
 
 	<?php include_once ROOT_DIR . '/views/includes/alert-error.php'; ?>
 	<?php include_once ROOT_DIR . '/views/includes/alert-success.php'; ?>
