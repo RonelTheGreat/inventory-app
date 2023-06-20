@@ -62,7 +62,7 @@
 		<?php include_once ROOT_DIR . '/views/includes/image-url-uploader.php' ?>
 
 		<div class="flex flex-row items-center justify-end mt-8">
-			<button type="submit"class="custom-primary-button">Add product</button>
+			<button type="submit" class="custom-primary-button">Add product</button>
 		</div>
 	</form>
 </div>
