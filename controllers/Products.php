@@ -27,6 +27,15 @@ class Products extends BaseController {
 				],
 			],
 			[
+				'name' => 'size',
+				'type' => 'string',
+				'required' => true,
+				'errorMessages' => [
+					'isRequired' => 'Size is required.',
+					'isEmpty' => 'Please select a size.',
+				]
+			],
+			[
 				'name' => 'description',
 				'type' => 'string',
 				'required' => false,
@@ -149,6 +158,7 @@ class Products extends BaseController {
 		$this->renderView('edit', [
 			'product' => $product,
 			'categoryOptions' => $this->getCategoryOptions(),
+			'sizeOptions' => $this->getSizeOptions(),
 		]);
 	}
 	
@@ -199,6 +209,7 @@ class Products extends BaseController {
 				'category_id' => $validated['category'],
 				'description' => $validated['description'],
 				'price' => $validated['price'],
+				'size' => $validated['size'],
 			],
 			[
 				'id' => $product['id'],
@@ -256,7 +267,7 @@ class Products extends BaseController {
 		]);
 	}
 
-	protected function getCategoryOptions() {
+	protected function getCategoryOptions(): array {
 		$categoryOptions = ['0' => '-- Select Category --'];
 		$categories = $this->db->selectAll('categories');
 		foreach ($categories as $category) {
@@ -264,6 +275,19 @@ class Products extends BaseController {
 		}
 
 		return $categoryOptions;
+	}
+
+	protected function getSizeOptions(): array {
+		$sizes = $this->db->selectAll('sizes');
+
+		// TODO: this should be on query level.
+		uasort($sizes, fn($a, $b) => $a['order'] <=> $b['order']);
+
+		foreach ($sizes as $size) {
+			$sizeOptions[$size['code']] = $size['label'];
+		}
+
+		return $sizeOptions;
 	}
 }
 

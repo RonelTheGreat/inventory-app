@@ -23,3 +23,18 @@ CREATE TABLE product_images (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE sizes (
+    `code` VARCHAR(16) PRIMARY KEY,
+    `label` VARCHAR(64) NOT NULL,
+    `order` TINYINT NOT NULL
+);
+INSERT INTO sizes
+VALUES ('xs', 'Extra Small', 1),
+       ('s', 'Small', 2),
+       ('m', 'Medium', 3),
+       ('l', 'Large', 4),
+       ('xl', 'Extra Large', 5),
+       ('2xl', 'Extra Extra Large', 6),
+       ('fs', 'Free Size', 7);
+
+ALTER TABLE products ADD COLUMN size VARCHAR(16) NOT NULL DEFAULT 'fs' AFTER price;
