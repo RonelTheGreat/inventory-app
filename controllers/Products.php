@@ -52,6 +52,11 @@ class Products extends BaseController {
 				]
 			],
 			[
+				'name' => 'stocks',
+				'type' => 'integer',
+				'required' => false,
+			],
+			[
 				'name' => 'existing_images',
 				'type' => 'array',
 				'required' => false,
@@ -104,6 +109,7 @@ class Products extends BaseController {
 				'description' => $validated['description'],
 				'price' => $validated['price'],
 				'size' => $validated['size'],
+				'stocks' => $validated['stocks'],
 			]
 		);
 
@@ -212,6 +218,7 @@ class Products extends BaseController {
 				'description' => $validated['description'],
 				'price' => $validated['price'],
 				'size' => $validated['size'],
+				'stocks' => $validated['stocks'],
 			],
 			[
 				'id' => $product['id'],
