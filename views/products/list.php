@@ -13,6 +13,7 @@
 		<thead>
 			<tr>
 				<th class="text-left p-2 border border-slate-300">Name</th>
+				<th class="text-left p-2 border border-slate-300">Description</th>
 				<th class="p-2 border border-slate-300">Price</th>
 				<th class="p-2 border border-slate-300">Stocks</th>
 				<th class="p-2 border border-slate-300">Actions</th>
@@ -25,6 +26,10 @@
 						<a href="/index.php?p=products&action=edit&id=<?= $product['id']; ?>" class="block w-100 hover:underline">
 							<?= $product['name']; ?>
 						</a>
+					</td>
+
+					<td class="p-2 border border-slate-300">
+						<?= $product['description']; ?>
 					</td>
 
 					<td class="w-24 text-right p-2 border border-slate-300">
