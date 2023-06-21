@@ -26,13 +26,19 @@
 					</td>
 
 					<td class="w-24 text-right p-2 border border-slate-300">
-						<a href="/index.php?p=categories&action=delete&id=<?= $category['id']; ?>">
+						<button type="button"
+								data-delete-url="/index.php?p=categories&action=delete&id=<?= $category['id']; ?>"
+								data-item-name="<?= $category['name']; ?>"
+								data-trigger-delete-modal
+						>
 							<i class="far fa-trash-alt hover:text-red-700"></i>
-						</a>
+						</button>
 					</td>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>
 	</table>
+
+	<?php include_once ROOT_DIR . '/views/includes/delete-list-item-modal.php'; ?>
 </div>
 
