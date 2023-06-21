@@ -8,7 +8,6 @@
 	</form>
 </dialog>
 
-
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
 		const deleteButtons = document.querySelectorAll('button[data-trigger-delete-modal]');
