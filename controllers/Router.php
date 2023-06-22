@@ -20,18 +20,18 @@ class Router {
 		// Has "p" query param but not in the list of valid routes.
 		if (!in_array($page, array_keys($this->getRoutes()))) return false;
 		
-		// No action indicated.
-		if (trim($action) == '') return false;
+		// No action indicated. (Except login page)
+		if (trim($action) == '' && $page !== 'login') return false;
 		
 		// Has action indicated but not in the list of valid actions per page.
-		if (!in_array($action, $this->getRoutes()[$page]['actions'])) return false;
+		if ($page !== 'login' && !in_array($action, $this->getRoutes()[$page]['actions'])) return false;
 		
 		$controllerFile = $this->getRoutes()[$page]['handler'];
 		
 		if (!file_exists($controllerFile)) return false;
 		
 		$this->page = $page;
-		$this->action = $action;
+		$this->action = $page === 'login' ? 'login' : $action;
 		
 		return $controllerFile;
 	}
