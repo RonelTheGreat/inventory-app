@@ -41,10 +41,16 @@
 					</td>
 
 					<td class="w-24 text-right p-2 border border-slate-300">
+						<a href="/index.php?p=products&action=edit&id=<?= $product['id']; ?>"
+						   class="hover:text-blue-600 mr-2" title="Edit"
+						>
+							<i class="far fa-edit hover:text-"></i>
+						</a>
 						<button type="button"
 								data-delete-url="/index.php?p=products&action=delete&id=<?= $product['id']; ?>"
 								data-item-name="<?= $product['name']; ?>"
 								data-trigger-delete-modal
+								title="Delete"
 						>
 							<i class="far fa-trash-alt hover:text-red-700"></i>
 						</button>

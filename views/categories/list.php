@@ -26,6 +26,12 @@
 					</td>
 
 					<td class="w-24 text-right p-2 border border-slate-300">
+						<a href="/index.php?p=categories&action=edit&id=<?= $category['id']; ?>"
+						   class="hover:text-blue-600 mr-2" title="Edit"
+						>
+							<i class="far fa-edit hover:text-"></i>
+						</a>
+
 						<button type="button"
 								data-delete-url="/index.php?p=categories&action=delete&id=<?= $category['id']; ?>"
 								data-item-name="<?= $category['name']; ?>"
