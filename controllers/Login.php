@@ -31,10 +31,34 @@ class Login extends BaseController {
 	}
 
 	public function loginPost() {
+		$errorMessage = 'Username or password is incorrect.';
 		$validated = $this->request->validate($this->getValidationRules());
 
 		if (!$validated) {
 			$this->setErrorMessage($this->request->getValidationErrorMessage());
+			$this->redirect([
+				'p' => 'login',
+			]);
+			exit;
+		}
+
+		$admin = $this->db->selectOne(
+			'admins',
+			[
+				'username' => $validated['username'],
+			]
+		);
+
+		if (!$admin) {
+			$this->setErrorMessage($errorMessage);
+			$this->redirect([
+				'p' => 'login',
+			]);
+			exit;
+		}
+
+		if (!password_verify($validated['password'], $admin['password'])) {
+			$this->setErrorMessage($errorMessage);
 			$this->redirect([
 				'p' => 'login',
 			]);
