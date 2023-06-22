@@ -18,7 +18,7 @@ require_once  $controllerFile;
 $className = ucwords($router->getPage());
 $controllerInstance = new $className(new Database(), new Request());
 
-$controllerInstance->setViewLayout('default');
+$controllerInstance->setViewLayout($controllerInstance instanceof Login ? 'login' : 'default');
 $controllerInstance->setViewDirectoryName($router->getPage());
 $handler = $controllerInstance->getHandler($router->getAction(), $_SERVER['REQUEST_METHOD']);
 call_user_func([$controllerInstance, $handler]);
