@@ -75,29 +75,26 @@ class Products extends BaseController {
 		]);
 	}
 
-	public function listGet() {
+	public function index() {
 		$this->renderView('list', [
 			'products' => $this->db->selectAll('products'),
 		]);
 	}
 	
-	public function addGet() {
+	public function new() {
 		$this->renderView('add', [
 			'categoryOptions' => $this->getCategoryOptions(),
 			'sizeOptions' => $this->getSizeOptions(),
 		]);
 	}
 	
-	public function addPost() {
+	public function create() {
 		// Validate form inputs.
 		$validated = $this->request->validate($this->getValidationRules());
 
 		if (!$validated) {
 			$this->setErrorMessage($this->request->getValidationErrorMessage());
-			$this->redirect([
-				'p' => 'products',
-				'action' => 'add'
-			]);
+			$this->redirect('/products/new');
 			exit;
 		}
 
@@ -128,23 +125,16 @@ class Products extends BaseController {
 		
 		$this->setSuccessMessage('The product has been added successfully!');
 		
-		$this->redirect([
-			'p' => 'products',
-			'action' => 'edit',
-			'id' => $newProductId,
-		]);
+		$this->redirect('/products/' . $newProductId . '/edit');
 	}
 	
-	public function editGet() {
+	public function edit() {
 		$productId = $this->request->get('id');
 
 		// Check if id is valid.
-		if (!is_numeric($_GET['id'])) {
+		if (!is_numeric($productId)) {
 			$this->setErrorMessage('Product not found.');
-			$this->redirect([
-				'p' => 'products',
-				'action' => 'list',
-			]);
+			$this->redirect('/products');
 		}
 		
 		// Fetch product.
@@ -153,10 +143,7 @@ class Products extends BaseController {
 		// Check if product exists.
 		if ($product === false) {
 			$this->setErrorMessage('Product not found.');
-			$this->redirect([
-				'p' => 'products',
-				'action' => 'list',
-			]);
+			$this->redirect('/products');
 			exit;
 		}
 
@@ -170,30 +157,24 @@ class Products extends BaseController {
 		]);
 	}
 	
-	public function editPost() {
+	public function update() {
 		$productId = $this->request->get('id');
+
+		if (!$this->request->isPut()) {
+			return http_response_code(400);
+		}
 
 		// Check if id is valid.
 		if (!is_numeric($productId)) {
 			$this->setErrorMessage('Product not found.');
-			$this->redirect([
-				'p' => 'products',
-				'action' => 'list',
-			]);
-			exit;
+			$this->redirect('/products');
 		}
 
 		// Validate form inputs.
 		$validated = $this->request->validate($this->getValidationRules());
-
 		if (!$validated) {
 			$this->setErrorMessage($this->request->getValidationErrorMessage());
-			$this->redirect([
-				'p' => 'products',
-				'action' => 'edit',
-				'id' => $productId
-			]);
-			exit;
+			$this->redirect('/products/' . $productId . '/edit');
 		}
 		
 		// Fetch product.
@@ -202,11 +183,7 @@ class Products extends BaseController {
 		// Check if product exists.
 		if ($product === false) {
 			$this->setErrorMessage('Product not found.');
-			$this->redirect([
-				'p' => 'products',
-				'action' => 'list',
-			]);
-			exit;
+			$this->redirect('/products');
 		}
 		
 		// Update product.
@@ -258,22 +235,15 @@ class Products extends BaseController {
 
 		$this->setSuccessMessage('The product has been edited successfully!');
 		
-		$this->redirect([
-			'p' => 'products',
-			'action' => 'edit',
-			'id' => $product['id'],
-		]);
+		$this->redirect('/products/' . $product['id'] . '/edit');
 	}
 	
-	public function deleteGet() {
-		$this->db->delete('products', ['id' => $_GET['id'] ?? 0]);
+	public function destroy() {
+		$this->db->delete('products', ['id' => $this->request->get('id') ?? 0]);
 		
 		$this->setSuccessMessage('The product has been deleted successfully!');
 		
-		$this->redirect([
-			'p' => 'products',
-			'action' => 'list',
-		]);
+		$this->redirect('/products');
 	}
 
 	protected function getCategoryOptions(): array {

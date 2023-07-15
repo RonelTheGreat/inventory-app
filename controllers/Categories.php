@@ -1,62 +1,68 @@
 <?php
 
 class Categories extends BaseController {
-	
-	public function listGet() {
+
+	public function __construct(Database $db, Request $request)
+	{
+		parent::__construct($db, $request);
+
+		$this->setValidationRules([
+			[
+				'name' => 'name',
+				'type' => 'string',
+				'required' => true,
+				'errorMessages' => [
+					'isRequired' => 'Category name is required.',
+					'isEmpty' => 'Please enter category name.',
+				],
+			]
+		]);
+	}
+
+	public function index() {
 		$this->renderView('list', [
 			'categories' => $this->db->selectAll('categories'),
 		]);
 	}
 	
-	public function addGet() {
+	public function new() {
 		$this->renderView('add');
 	}
 	
-	public function addPost() {
+	public function create() {
 		// Validate form inputs.
-		$name = $_POST['name'] ?? '';
+		$validated = $this->request->validate($this->getValidationRules());
 		
-		if (trim($name) == '') {
-			$this->setErrorMessage('Please enter category name');
-			$this->redirect([
-				'p' => 'categories',
-				'action' => 'add'
-			]);
+		if (!$validated) {
+			$this->setErrorMessage($this->request->getValidationErrorMessage());
+			$this->redirect('/categories/new');
 			exit;
 		}
 		
-		$newCategoryId = $this->db->insert('categories', ['name' => $name]);
+		$newCategoryId = $this->db->insert('categories', ['name' => $validated['name']]);
 		
 		$this->setSuccessMessage('The category has been added successfully');
 		
-		$this->redirect([
-			'p' => 'categories',
-			'action' => 'edit',
-			'id' => $newCategoryId,
-		]);
+		$this->redirect('/categories/' . $newCategoryId . '/edit');
 	}
 	
-	public function editGet() {
+	public function edit() {
+		$categoryId = $this->request->get('id');
+
 		// Check if id is valid.
-		if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+		if (!is_numeric($categoryId)) {
 			$this->setErrorMessage('Category not found.');
-			$this->redirect([
-				'p' => 'categories',
-				'action' => 'list',
-			]);
+			$this->redirect('/categories');
 			exit;
 		}
 		
 		// Fetch category.
-		$category = $this->db->selectOne('categories', ['id' => $_GET['id']]);
+		$category = $this->db->selectOne('categories', ['id' => $categoryId]);
 		
 		// Check if product exists.
 		if ($category === false) {
 			$this->setErrorMessage('Category not found.');
-			$this->redirect([
-				'p' => 'categories',
-				'action' => 'list',
-			]);
+			$this->redirect('/categories');
 			exit;
 		}
 		
@@ -65,38 +71,34 @@ class Categories extends BaseController {
 		]);
 	}
 	
-	public function editPost() {
+	public function update() {
+		$categoryId = $this->request->get('id');
+
+		if (!$this->request->isPut()) {
+			return http_response_code(400);
+		}
+
 		// Check if id is valid.
-		if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+		if (!is_numeric($categoryId)) {
 			$this->setErrorMessage('Category not found.');
-			$this->redirect([
-				'p' => 'categories',
-				'action' => 'list',
-			]);
+			$this->redirect('/categories');
 			exit;
 		}
-		
-		// Validate name field.
-		if (!isset($_POST['name']) || trim($_POST['name']) == '') {
-			$this->setErrorMessage('Please enter category name.');
-			$this->redirect([
-				'p' => 'categories',
-				'action' => 'edit',
-				'id' => $_GET['id'],
-			]);
-			exit;
+
+		// Validate form inputs.
+		$validated = $this->request->validate($this->getValidationRules());
+		if (!$validated) {
+			$this->setErrorMessage($this->request->getValidationErrorMessage());
+			$this->redirect('/categories/' . $categoryId . '/edit');
 		}
-		
+
 		// Fetch product.
-		$category = $this->db->selectOne('categories', ['id' => $_GET['id']]);
+		$category = $this->db->selectOne('categories', ['id' => $categoryId]);
 		
 		// Check if product exists.
 		if ($category === false) {
 			$this->setErrorMessage('Category not found.');
-			$this->redirect([
-				'p' => 'categories',
-				'action' => 'list',
-			]);
+			$this->redirect('/categories');
 			exit;
 		}
 		
@@ -104,30 +106,23 @@ class Categories extends BaseController {
 		$this->db->update(
 			'categories',
 			[
-				'name' => $_POST['name']
+				'name' => $validated['name']
 			],
 			[
-				'id' => $category['id']
+				'id' => $category['id'],
 			]
 		);
 		
 		$this->setSuccessMessage('The category has been edited successfully');
 		
-		$this->redirect([
-			'p' => 'categories',
-			'action' => 'edit',
-			'id' => $category['id'],
-		]);
+		$this->redirect('/categories/' . $category['id'] . '/edit');
 	}
 	
-	public function deleteGet() {
-		$this->db->delete('categories', ['id' => $_GET['id'] ?? 0]);
+	public function destroy() {
+		$this->db->delete('categories', ['id' => $this->request->get('id') ?? 0]);
 		
 		$this->setSuccessMessage('The category has been deleted successfully!');
 		
-		$this->redirect([
-			'p' => 'categories',
-			'action' => 'list',
-		]);
+		$this->redirect('/categories');
 	}
 }

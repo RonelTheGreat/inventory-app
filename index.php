@@ -7,19 +7,18 @@
 	require_once ROOT_DIR . '/controllers/Router.php';
 	require_once ROOT_DIR . '/core/Request.php';
 
-	$router = new Router();
-	$router->setRoutes(ROOT_DIR . '/routes.php');
-	$controllerFile = $router->getRoute( $_REQUEST['p'] ?? '', $_REQUEST['action'] ?? '');
+	$request = new Request();
+	$route = Router::getRoute($request);
 
-	if ($controllerFile === false) exit('Page not found.');
+	if (empty($route)) exit('Page not found.');
 
-	require_once  $controllerFile;
+	require_once $route['controllerFile'];
 
-	$className = ucwords($router->getPage());
-	$controllerInstance = new $className(new Database(), new Request());
+	$className = $route['class'];
+	$controllerInstance = new $className(new Database(), $request);
 
 	$controllerInstance->setViewLayout($controllerInstance instanceof Login ? 'login' : 'default');
-	$controllerInstance->setViewDirectoryName($router->getPage());
-	$handler = $controllerInstance->getHandler($router->getAction(), $_SERVER['REQUEST_METHOD']);
-	call_user_func([$controllerInstance, $handler]);
+	$controllerInstance->setViewDirectoryName(strtolower($route['class']));
+
+	call_user_func([$controllerInstance, $route['method']]);
 

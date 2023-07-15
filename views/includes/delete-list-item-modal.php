@@ -15,9 +15,11 @@
 		deleteButtons.forEach((buttonElement) => deleteEventHandler(buttonElement))
 
 		function deleteEventHandler (buttonElement) {
-			buttonElement.addEventListener('click', function () {
+			buttonElement.addEventListener('click', function (e) {
+				e.preventDefault();
+
 				const itemName = this.dataset.itemName;
-				const deleteUrl = this.dataset.deleteUrl;
+				const itemId = this.dataset.itemId;
 
 				const deleteModal = document.querySelector('dialog[data-delete-item-modal]');
 				const messageContainer = deleteModal.querySelector('div[data-message]');
@@ -26,7 +28,7 @@
 
 				deleteModal.addEventListener('close', function () {
 					if (this.returnValue === 'submit') {
-						location.href = deleteUrl;
+						document.querySelector(`[data-delete-product-form="${itemId}"]`).submit();
 					}
 				});
 

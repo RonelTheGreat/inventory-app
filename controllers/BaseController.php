@@ -45,11 +45,12 @@ class BaseController {
 		include_once $this->getViewLayout();
 	}
 	
-	protected function redirect(array $queryParams) {
+	protected function redirect(string $url, array $queryParams = []) {
 		$finalParams = [];
 		foreach ($queryParams as $name => $value) $finalParams[] = $name . '=' . $value;
 		
-		header('Location: ' . HTTPS_URL . '/index.php?' . implode('&', $finalParams));
+		header('Location: ' . HTTPS_URL . $url . implode('&', $finalParams));
+		exit;
 	}
 
 	protected function setErrorMessage(string $errorMessage) {

@@ -2,12 +2,15 @@
 	<h1 class="text-2xl mb-10">Edit Category - <?= $category['name']; ?> </h1>
 
 	<div class="mb-10">
-		<a href="/index.php?p=categories&action=list" class="custom-secondary-button">
+		<a href="/categories" class="custom-secondary-button">
 			&larr; Back to list
 		</a>
 	</div>
 
-	<form method="POST">
+	<form method="POST" action="/categories/<?= $category['id']; ?>">
+		<!-- Method override -->
+		<input type="hidden" name="method" value="PUT">
+
 		<?php include_once ROOT_DIR . '/views/includes/alert-error.php'; ?>
 		<?php include_once ROOT_DIR . '/views/includes/alert-success.php'; ?>
 

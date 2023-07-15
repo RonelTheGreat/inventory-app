@@ -2,12 +2,15 @@
 	<h1 class="text-2xl mb-10">Edit Product - <?= $product['name']; ?> </h1>
 
 	<div class="mb-10">
-		<a href="/index.php?p=products&action=list" class="custom-secondary-button">
+		<a href="/products" class="custom-secondary-button">
 			&larr; Back to list
 		</a>
 	</div>
 
-	<form method="POST">
+	<form action="/products/<?= $product['id']; ?>" method="POST">
+		<!-- Method override -->
+		<input type="hidden" name="method" value="PUT">
+
 		<?php include_once ROOT_DIR . '/views/includes/alert-error.php'; ?>
 		<?php include_once ROOT_DIR . '/views/includes/alert-success.php'; ?>
 

@@ -2,7 +2,7 @@
 	<div class="flex flex-row items-center mb-5">
 		<h1 class="text-2xl">Products</h1>
 		<div class="ml-auto">
-			<a href="/index.php?p=products&action=add" class="custom-primary-button">Add Product</a>
+			<a href="/products/new" class="custom-primary-button">Add Product</a>
 		</div>
 	</div>
 
@@ -41,19 +41,22 @@
 					</td>
 
 					<td class="w-24 text-right p-2 border border-slate-300">
-						<a href="/index.php?p=products&action=edit&id=<?= $product['id']; ?>"
-						   class="hover:text-blue-600 mr-2" title="Edit"
-						>
+						<a href="/products/<?= $product['id']; ?>/edit" class="hover:text-blue-600 mr-2" title="Edit">
 							<i class="far fa-edit hover:text-"></i>
 						</a>
-						<button type="button"
-								data-delete-url="/index.php?p=products&action=delete&id=<?= $product['id']; ?>"
-								data-item-name="<?= $product['name']; ?>"
-								data-trigger-delete-modal
-								title="Delete"
+						<form action="/products/<?= $product['id']; ?>" method="POST"
+							  data-delete-product-form="<?= $product['id']; ?>" class="inline"
 						>
-							<i class="far fa-trash-alt hover:text-red-700"></i>
-						</button>
+							<input type="hidden" name="method" value="DELETE">
+							<button type="button"
+									data-item-name="<?= $product['name']; ?>"
+									data-item-id="<?= $product['id']; ?>"
+									data-trigger-delete-modal
+									title="Delete"
+							>
+								<i class="far fa-trash-alt hover:text-red-700"></i>
+							</button>
+						</form>
 					</td>
 				</tr>
 			<?php endforeach; ?>

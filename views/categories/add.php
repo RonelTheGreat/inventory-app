@@ -7,7 +7,7 @@
 		</a>
 	</div>
 
-	<form method="POST">
+	<form method="POST" action="/categories">
 		<?php include_once ROOT_DIR . '/views/includes/alert-error.php'; ?>
 
 		<div class="mb-4">

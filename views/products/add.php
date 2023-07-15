@@ -2,12 +2,12 @@
 	<h1 class="text-2xl mb-10">Add Product</h1>
 
 	<div class="mb-10">
-		<a href="/index.php?p=products&action=list" class="custom-secondary-button">
+		<a href="/products" class="custom-secondary-button">
 			&larr; Back to list
 		</a>
 	</div>
 
-	<form method="POST">
+	<form method="POST" action="/products">
 		<?php include_once ROOT_DIR . '/views/includes/alert-error.php'; ?>
 		<?php include_once ROOT_DIR . '/views/includes/alert-success.php'; ?>
 

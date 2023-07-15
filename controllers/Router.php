@@ -1,47 +1,87 @@
 <?php
 
 class Router {
-	protected array $routes;
-	private string $page;
-	private string $action;
-	
-	public function getRoutes(): array {
-		return $this->routes;
-	}
-	
-	public function setRoutes(string $routesDirectory) {
-		$this->routes = require_once $routesDirectory;
-	}
-	
-	public function getRoute(string $page, string $action): bool|string {
-		// No "p" (page) query param.
-		if (trim($page) == '') return false;
-		
-		// Has "p" query param but not in the list of valid routes.
-		if (!in_array($page, array_keys($this->getRoutes()))) return false;
-		
-		// No action indicated. (Except login page)
-		if (trim($action) == '' && $page !== 'login') return false;
-		
-		// Has action indicated but not in the list of valid actions per page.
-		if ($page !== 'login' && !in_array($action, $this->getRoutes()[$page]['actions'])) return false;
-		
-		$controllerFile = $this->getRoutes()[$page]['handler'];
-		
-		if (!file_exists($controllerFile)) return false;
-		
-		$this->page = $page;
-		$this->action = $page === 'login' ? 'login' : $action;
-		
-		return $controllerFile;
-	}
-	
-	public function getPage(): string {
-		return $this->page;
-	}
-	
-	public function getAction(): string {
-		return $this->action;
+	/**
+	 *
+	 * Controller name    | URL                    | HTTP method    | Purpose
+	 *
+	 * index               /products                 GET              List all products
+	 * new                 /products/new             GET              Shows a form for creating a new product
+	 * create              /products                 POST             Creates a new product
+	 * show                /products/:id             GET              Shows the product with the given ID
+	 * edit                /products/:id/edit        GET			  Shows a form for editing the product
+	 * update              /products/:id             PUT              Updates the product with the given ID
+	 * destroy             /products/:id             DELETE           the product with the given ID
+	 *
+	 */
+	private static array $validRoutes = [
+		'get' => [
+			'/route' => 'index',
+			'/route/new' => 'new',
+			'/route/:id' => 'show',
+			'/route/:id/edit' => 'edit',
+		],
+		'post' => [
+			'/route' => 'create',
+		],
+		'put' => [
+			'/route/:id' => 'update',
+		],
+		'delete' => [
+			'/route/:id' => 'destroy',
+		],
+	];
+
+	public static function getRoute(Request $request) :array|bool {
+		$method = $request->getMethod();
+
+		// Extract url parts and make a copy.
+		$urlPathParts = $urlPathPartsCopy = explode('/', parse_url($_SERVER['REQUEST_URI'])['path']);
+
+		// Create mock route by changing the root route to a generic "route" word.
+		// For example the route is /products/2/edit, this would become /route/2/edit.
+		$urlPathPartsCopy[1] = 'route';
+		$mockUrlPath = implode('/', $urlPathPartsCopy);
+
+		$routeData = [];
+		foreach (self::$validRoutes[$method] as $route => $handler) {
+			$pattern = preg_replace('/:[a-zA-Z0-9_\-]+/', '([a-zA-Z0-9_\-]+)', $route);
+			$pattern = str_replace('/', '\/', $pattern);
+			$pattern = '/^' . $pattern . '$/';
+
+			if (preg_match($pattern, $mockUrlPath, $matches)) {
+				$class = ucwords($urlPathParts[1]);
+
+				// No controller defined.
+				$controllerFile = ROOT_DIR . '/controllers/' . $class . '.php';
+				if (!is_file($controllerFile)) break;
+
+				// Set route data.
+				$routeData['class'] = $class;
+				$routeData['method'] = $handler;
+				$routeData['controllerFile'] = $controllerFile;
+
+				// Extract and set dynamic parameters from the route.
+				$paramNames = [];
+				foreach (explode('/', $route) as $item) {
+					if (str_contains($item, ':')) {
+						$paramNames[] = explode(':', $item)[1];
+					}
+				}
+				foreach ($matches as $index => $param) {
+					if ($index === 0) continue;
+
+					$key = $paramNames[$index - 1] ?? false;
+					if ($key !== false) {
+						$request->set($key, $param);
+					}
+				}
+
+				break;
+			}
+		}
+
+		return $routeData;
 	}
 }
 

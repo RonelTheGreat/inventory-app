@@ -4,8 +4,14 @@ class Request {
 	private array $request = [];
 	private string $validationErrorMessage = '';
 
-	public function __construct() {
+	public function __construct(array $routeParams = []) {
 		foreach ($_REQUEST as $key => $value) $this->request[$key] = $value;
+
+		foreach ($routeParams as $key => $value) $this->request[$key] = $value;
+	}
+
+	public function set(string $key, mixed $value) {
+		$this->request[$key] = $value;
 	}
 
 	public function get(string $name, string $default = null): mixed {
@@ -18,6 +24,33 @@ class Request {
 
 	public function getValidationErrorMessage(): string {
 		return $this->validationErrorMessage;
+	}
+
+	public function getMethod() :string {
+		$method = strtolower($_SERVER['REQUEST_METHOD']);
+
+		// Check if request has method override and set accordingly.
+		if ($method === 'post' && !is_null($this->get('method'))) {
+			$method = strtolower($this->get('method'));
+		}
+
+		return $method;
+	}
+
+	public function isGet() :bool {
+		return strtolower($_SERVER['REQUEST_METHOD']) === 'get';
+	}
+
+	public function isPost() :bool {
+		return strtolower($_SERVER['REQUEST_METHOD']) === 'post';
+	}
+
+	public function isPut() :bool {
+		return $this->isPost() && isset($this->request['method']) && strtolower($this->request['method']) === 'put';
+	}
+
+	public function isDelete() :bool {
+		return $this->isPost() && isset($this->request['method']) && strtolower($this->request['method']) === 'delete';
 	}
 
 	public function validate(array $rules): bool|array {
