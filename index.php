@@ -4,7 +4,7 @@
 
 	require_once ROOT_DIR . '/models/Database.php';
 	require_once ROOT_DIR . '/controllers/BaseController.php';
-	require_once ROOT_DIR . '/controllers/Router.php';
+	require_once ROOT_DIR . '/core/Router.php';
 	require_once ROOT_DIR . '/core/Request.php';
 
 	$request = new Request();
