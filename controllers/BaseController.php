@@ -10,8 +10,6 @@ class BaseController {
 	protected Request $request;
 	
 	public function __construct(Database $db, Request $request) {
-		session_start();
-		
 		$this->db = $db;
 		$this->request = $request;
 	}

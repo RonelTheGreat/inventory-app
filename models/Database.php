@@ -37,7 +37,7 @@ class Database {
 		$query = $this->connection->prepare('
 			SELECT ' . $selectColumnsStr . '
 			FROM ' . $tableName . '
-			WHERE ' . implode('AND ', $where) . '
+			WHERE ' . implode(' AND ', $where) . '
 		');
 		$query->execute($fields);
 		

@@ -42,10 +42,12 @@ ALTER TABLE products ADD COLUMN stocks INT UNSIGNED NOT NULL DEFAULT 0 AFTER siz
 
 CREATE TABLE admins (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(30) NOT NULL UNIQUE,
+    username VARCHAR(30) NOT NULL UNIQUE,qq
     `password` VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-INSERT INTO admins (username, `password`) VALUES('admin', '$2y$10$8n0ewIp84osGR2/qip84tObr.Ow9ca069RC2tYOzwoSA2J2zbWPai');
+INSERT INTO admins (username, `password`) VALUES('admin', '$2y$10$0iQKge.daC7cLh/KEX8yWO0r/4YQ3I0BPlxgTbUzMFe/KFbplXL8u');
+
+ALTER TABLE admins ADD COLUMN session_id VARCHAR(255) AFTER `password`;
 

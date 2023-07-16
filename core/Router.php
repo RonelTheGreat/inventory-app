@@ -32,11 +32,35 @@ class Router {
 		],
 	];
 
+	private static array $specialRoutes = [
+		'get' => [
+			'/login' => 'index',
+		],
+		'post' => [
+			'/login' => 'login',
+		],
+	];
+
 	public static function getRoute(Request $request) :array|bool {
 		$method = $request->getMethod();
+		$urlParts = parse_url($_SERVER['REQUEST_URI']);
 
 		// Extract url parts and make a copy.
-		$urlPathParts = $urlPathPartsCopy = explode('/', parse_url($_SERVER['REQUEST_URI'])['path']);
+		$urlPathParts = $urlPathPartsCopy = explode('/', $urlParts['path']);
+
+		// Check if current route is in the special route list.
+		if (isset(self::$specialRoutes[$method][$urlParts['path']])) {
+			$class = ucwords($urlPathParts[1]);
+			// No controller defined.
+			$controllerFile = ROOT_DIR . '/controllers/' . $class . '.php';
+			if (!is_file($controllerFile)) return false;
+
+			return [
+				'class' => $class,
+				'method' => self::$specialRoutes[$method][$urlParts['path']],
+				'controllerFile' => $controllerFile,
+			];
+		}
 
 		// Create mock route by changing the root route to a generic "route" word.
 		// For example the route is /products/2/edit, this would become /route/2/edit.

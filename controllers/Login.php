@@ -26,20 +26,17 @@ class Login extends BaseController {
 		]);
 	}
 
-	public function loginGet() {
+	public function index() {
 		$this->renderView('login');
 	}
 
-	public function loginPost() {
+	public function login() {
 		$errorMessage = 'Username or password is incorrect.';
 		$validated = $this->request->validate($this->getValidationRules());
 
 		if (!$validated) {
 			$this->setErrorMessage($this->request->getValidationErrorMessage());
-			$this->redirect([
-				'p' => 'login',
-			]);
-			exit;
+			$this->redirect('/login');
 		}
 
 		$admin = $this->db->selectOne(
@@ -51,23 +48,34 @@ class Login extends BaseController {
 
 		if (!$admin) {
 			$this->setErrorMessage($errorMessage);
-			$this->redirect([
-				'p' => 'login',
-			]);
-			exit;
+			$this->redirect('/login');
 		}
 
 		if (!password_verify($validated['password'], $admin['password'])) {
 			$this->setErrorMessage($errorMessage);
-			$this->redirect([
-				'p' => 'login',
-			]);
-			exit;
+			$this->redirect('/login');
 		}
 
-		$this->redirect([
-			'p' => 'products',
-			'action' => 'list',
-		]);
+		$sessionId = base64_encode(time()  . ':' .  $admin['id']);
+		setcookie(
+			'asid',
+			$sessionId,
+			time() + 60 * 60, // Expires in 1 hour
+			'/',
+			'localhost', // TODO: change this in production
+			false // TODO: change this in production
+		);
+
+		$this->db->update(
+			'admins',
+			[
+				'session_id' => $sessionId
+			],
+			[
+				'id' => $admin['id'],
+			]
+		);
+
+		$this->redirect('/products');
 	}
 }
