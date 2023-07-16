@@ -23,7 +23,7 @@
 			<?php foreach ($products as $product): ?>
 				<tr class="hover:bg-slate-100">
 					<td class="p-2 border border-slate-300">
-						<a href="/index.php?p=products&action=edit&id=<?= $product['id']; ?>" class="block w-100 hover:underline">
+						<a href="/products/<?= $product['id']; ?>/edit" class="block w-100 hover:underline">
 							<?= $product['name']; ?>
 						</a>
 					</td>
