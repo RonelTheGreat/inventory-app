@@ -35,6 +35,7 @@ class Router {
 	private static array $specialRoutes = [
 		'get' => [
 			'/login' => 'index',
+			'/logout' => 'index',
 		],
 		'post' => [
 			'/login' => 'login',

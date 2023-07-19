@@ -19,4 +19,11 @@
 			<span class="ml-1">Categories</span>
 		</a>
 	</div>
+
+	<div class="px-4 py-3 hover:bg-slate-900/10 mt-10">
+		<a href="/logout" class="w-100 block">
+			<i class="fas fa-sign-out-alt"></i>
+			<span class="ml-1">Logout</span>
+		</a>
+	</div>
 </div>
