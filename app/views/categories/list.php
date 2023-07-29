@@ -6,8 +6,8 @@
 		</div>
 	</div>
 
-	<?php include_once ROOT_DIR . '/views/includes/alert-error.php'; ?>
-	<?php include_once ROOT_DIR . '/views/includes/alert-success.php'; ?>
+	<?php include_once ROOT_DIR . '/app/views/includes/alert-error.php'; ?>
+	<?php include_once ROOT_DIR . '/app/views/includes/alert-success.php'; ?>
 
 	<table class="w-full table-auto border-collapse border border-slate-500">
 		<thead>
@@ -50,6 +50,6 @@
 		</tbody>
 	</table>
 
-	<?php include_once ROOT_DIR . '/views/includes/delete-list-item-modal.php'; ?>
+	<?php include_once ROOT_DIR . '/app/views/includes/delete-list-item-modal.php'; ?>
 </div>
 

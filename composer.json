@@ -1,0 +1,17 @@
+{
+    "name": "rcob/inventory-system",
+    "description": "A simple inventory app for managing products",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Ronel Carlo Berino",
+            "email": "ronelcarlo.berino@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "app\\classes\\": "app/classes"
+        }
+    }
+}

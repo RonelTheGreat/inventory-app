@@ -1,5 +1,7 @@
 <?php
 
+namespace app\classes\core;
+
 class Request {
 	private array $request = [];
 	private string $validationErrorMessage = '';

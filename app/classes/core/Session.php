@@ -1,5 +1,7 @@
 <?php
 
+namespace app\classes\core;
+
 class Session {
 
 	public function __construct() {

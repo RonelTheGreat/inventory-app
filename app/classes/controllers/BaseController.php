@@ -1,5 +1,10 @@
 <?php
 
+namespace app\classes\controllers;
+
+use app\classes\core\Request;
+use app\classes\models\Database;
+
 class BaseController {
 	private string $layoutDirectory;
 	private string $viewsDirectory;
@@ -15,11 +20,11 @@ class BaseController {
 	}
 	
 	public function setViewDirectoryName(string $viewDirectoryName) {
-		$this->viewsDirectory = ROOT_DIR . '/views/' . $viewDirectoryName;
+		$this->viewsDirectory = ROOT_DIR . '/app/views/' . $viewDirectoryName;
 	}
 	
 	public function setViewLayout(string $layoutName) {
-		$this->layoutDirectory = ROOT_DIR . '/views/layouts/' . $layoutName . '.php';
+		$this->layoutDirectory = ROOT_DIR . '/app/views/layouts/' . $layoutName . '.php';
 	}
 	
 	public function getViewLayout(): string {

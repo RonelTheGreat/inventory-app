@@ -1,5 +1,10 @@
 <?php
 
+namespace app\classes\controllers;
+
+use app\classes\core\Request;
+use app\classes\models\Database;
+
 class Login extends BaseController {
 	public function __construct(Database $db, Request $request) {
 		parent::__construct($db, $request);

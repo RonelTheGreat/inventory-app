@@ -1,5 +1,9 @@
 <?php
 
+namespace app\classes\models;
+
+use PDO;
+
 class Database {
 	private PDO $connection;
 	

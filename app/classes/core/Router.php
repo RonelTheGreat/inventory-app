@@ -1,5 +1,9 @@
 <?php
 
+namespace app\classes\core;
+
+use app\classes\core\Request as Request;
+
 class Router {
 	/**
 	 *
@@ -53,7 +57,7 @@ class Router {
 		if (isset(self::$specialRoutes[$method][$urlParts['path']])) {
 			$class = ucwords($urlPathParts[1]);
 			// No controller defined.
-			$controllerFile = ROOT_DIR . '/controllers/' . $class . '.php';
+			$controllerFile = ROOT_DIR . '/app/classes/controllers/' . $class . '.php';
 			if (!is_file($controllerFile)) return false;
 
 			return [
@@ -78,7 +82,7 @@ class Router {
 				$class = ucwords($urlPathParts[1]);
 
 				// No controller defined.
-				$controllerFile = ROOT_DIR . '/controllers/' . $class . '.php';
+				$controllerFile = ROOT_DIR . '/app/classes/controllers/' . $class . '.php';
 				if (!is_file($controllerFile)) break;
 
 				// Set route data.

@@ -1,12 +1,13 @@
 <?php
 
-	require_once './config.php';
+	use app\classes\controllers\Login;
+	use app\classes\core\Request;
+	use app\classes\core\Router;
+	use app\classes\core\Session;
+	use app\classes\models\Database;
 
-	require_once ROOT_DIR . '/models/Database.php';
-	require_once ROOT_DIR . '/controllers/BaseController.php';
-	require_once ROOT_DIR . '/core/Router.php';
-	require_once ROOT_DIR . '/core/Request.php';
-	require_once ROOT_DIR . '/core/Session.php';
+	require_once 'vendor/autoload.php';
+	require_once './config.php';
 
 	$session = new Session();
 	$request = new Request();
@@ -44,7 +45,7 @@
 
 	require_once $route['controllerFile'];
 
-	$className = $route['class'];
+	$className = '\\app\\classes\\controllers\\' . $route['class'];
 	$controllerInstance = new $className($db, $request);
 
 	$controllerInstance->setViewLayout($controllerInstance instanceof Login ? 'login' : 'default');

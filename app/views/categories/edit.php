@@ -11,8 +11,8 @@
 		<!-- Method override -->
 		<input type="hidden" name="method" value="PUT">
 
-		<?php include_once ROOT_DIR . '/views/includes/alert-error.php'; ?>
-		<?php include_once ROOT_DIR . '/views/includes/alert-success.php'; ?>
+		<?php include_once ROOT_DIR . '/app/views/includes/alert-error.php'; ?>
+		<?php include_once ROOT_DIR . '/app/views/includes/alert-success.php'; ?>
 
 		<div class="mb-4">
 			<label class="custom-input-label">Name</label>

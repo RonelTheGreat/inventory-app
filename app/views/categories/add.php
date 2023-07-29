@@ -8,7 +8,7 @@
 	</div>
 
 	<form method="POST" action="/categories">
-		<?php include_once ROOT_DIR . '/views/includes/alert-error.php'; ?>
+		<?php include_once ROOT_DIR . '/app/views/includes/alert-error.php'; ?>
 
 		<div class="mb-4">
 			<label class="custom-input-label">Name</label>
