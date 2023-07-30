@@ -120,7 +120,6 @@ class Products extends BaseController {
 				'description' => $validated['description'],
 				'price' => $validated['price'],
 				'size' => $validated['size'],
-				'stocks' => $validated['stocks'],
 			]
 		);
 
@@ -136,6 +135,15 @@ class Products extends BaseController {
 				);
 			}
 		}
+
+		// Insert new stocks record.
+		$this->db->insert(
+			'stocks',
+			[
+				'product_id' => $newProductId,
+				'stocks' => $validated['stocks'],
+			],
+		);
 		
 		$this->setSuccessMessage('The product has been added successfully!');
 		
@@ -214,7 +222,6 @@ class Products extends BaseController {
 				'description' => $validated['description'],
 				'price' => $validated['price'],
 				'size' => $validated['size'],
-				'stocks' => $validated['stocks'],
 			],
 			[
 				'id' => $product['id'],
@@ -251,6 +258,13 @@ class Products extends BaseController {
 				);
 			}
 		}
+
+		// Update stocks.
+		$this->db->update(
+			'stocks',
+			['stocks' => $validated['stocks']],
+			['product_id' => intval($product['id'])],
+		);
 
 		$this->setSuccessMessage('The product has been edited successfully!');
 		
