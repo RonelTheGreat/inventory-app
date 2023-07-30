@@ -83,7 +83,12 @@ class Products extends BaseController {
 	public function index() {
 		$products = $this->db->selectAll('products');
 		foreach ($products as $key => $product) {
-			$products[$key]['images'] = $this->db->selectAll('product_images', ['product_id' => intval($product['id'])]);
+			$imagePreview = $this->db->selectOne('product_images', ['product_id' => intval($product['id'])]);
+			if ($imagePreview !== false) {
+				$products[$key]['imagePreview'] = $imagePreview['url'];
+			} else {
+				$products[$key]['imagePreview'] = '';
+			}
 
 			$stocks = $this->db->selectOne('stocks', ['product_id' => intval($product['id'])]);
 			if ($stocks !== false) $stocks = $stocks['stocks'];
