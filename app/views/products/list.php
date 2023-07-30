@@ -22,10 +22,15 @@
 		<tbody>
 			<?php foreach ($products as $product): ?>
 				<tr class="hover:bg-slate-100">
-					<td class="p-2 border border-slate-300">
+					<td class="relative group p-2 border border-slate-300">
 						<a href="/products/<?= $product['id']; ?>/edit" class="block w-100 hover:underline">
 							<?= $product['name']; ?>
 						</a>
+
+						<div class="hidden group-hover:block absolute right-0 z-50 w-64 h-64 bg-black bg-center bg-contain bg-no-repeat border border-slate-300 rounded-md"
+							 data-product-preview="<?= $product['images'][0]['url']; ?>"
+						>
+						</div>
 					</td>
 
 					<td class="p-2 border border-slate-300">
@@ -64,4 +69,12 @@
 	</table>
 
 	<?php include_once ROOT_DIR . '/app/views/includes/delete-list-item-modal.php'; ?>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			document.querySelectorAll('[data-product-preview]').forEach(function (item) {
+				item.style.backgroundImage = `url(${item.dataset.productPreview})`;
+			});
+		});
+	</script>
 </div>

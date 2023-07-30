@@ -81,8 +81,13 @@ class Products extends BaseController {
 	}
 
 	public function index() {
+		$products = $this->db->selectAll('products');
+		foreach ($products as $key => $product) {
+			$products[$key]['images'] = $this->db->selectAll('product_images', ['product_id' => intval($product['id'])]);
+		}
+
 		$this->renderView('list', [
-			'products' => $this->db->selectAll('products'),
+			'products' => $products,
 		]);
 	}
 	
