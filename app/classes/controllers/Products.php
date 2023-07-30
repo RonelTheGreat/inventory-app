@@ -84,6 +84,10 @@ class Products extends BaseController {
 		$products = $this->db->selectAll('products');
 		foreach ($products as $key => $product) {
 			$products[$key]['images'] = $this->db->selectAll('product_images', ['product_id' => intval($product['id'])]);
+
+			$stocks = $this->db->selectOne('stocks', ['product_id' => intval($product['id'])]);
+			if ($stocks !== false) $stocks = $stocks['stocks'];
+			$products[$key]['stocks'] = intval($stocks);
 		}
 
 		$this->renderView('list', [
@@ -159,6 +163,11 @@ class Products extends BaseController {
 
 		// Fetch images.
 		$product['images'] = $this->db->selectAll('product_images', ['product_id' => $product['id']]);
+
+		// Fetch stocks.
+		$stocks = $this->db->selectOne('stocks', ['product_id' => $product['id']]);
+		if ($stocks !== false) $stocks = $stocks['stocks'];
+		$product['stocks'] = $stocks;
 		
 		$this->renderView('edit', [
 			'product' => $product,

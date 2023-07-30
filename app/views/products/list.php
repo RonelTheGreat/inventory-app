@@ -45,9 +45,27 @@
 						<?= $product['stocks']; ?>
 					</td>
 
-					<td class="w-24 text-right p-2 border border-slate-300">
+					<td class="w-28 text-right p-2 border border-slate-300">
+						<form action="/stocks/<?= $product['id']; ?>?mode=mark_as_sold" method="POST"
+							  data-mark-as-sold-form="<?= $product['id']; ?>" class="inline mr-2"
+						>
+							<input type="hidden" name="method" value="PUT">
+							<input type="hidden" name="quantity" value="1">
+							<button type="button"
+									class="<?= $product['stocks'] <= 0 ? 'cursor-not-allowed' : ''; ?>"
+									data-item-name="<?= $product['name']; ?>"
+									data-item-id="<?= $product['id']; ?>"
+									data-item-stocks="<?= $product['stocks']; ?>"
+									data-trigger-mark-as-sold-modal
+									title="Mark as sold"
+									<?= $product['stocks'] <= 0 ? 'disabled' : ''; ?>
+							>
+								<i class="fas fa-tags fa-fw <?= $product['stocks'] > 0 ? 'hover:text-blue-600' : ''; ?>"></i>
+							</button>
+						</form>
+
 						<a href="/products/<?= $product['id']; ?>/edit" class="hover:text-blue-600 mr-2" title="Edit">
-							<i class="far fa-edit hover:text-"></i>
+							<i class="far fa-edit fa-fw hover:text-"></i>
 						</a>
 						<form action="/products/<?= $product['id']; ?>" method="POST"
 							  data-delete-product-form="<?= $product['id']; ?>" class="inline"
@@ -59,7 +77,7 @@
 									data-trigger-delete-modal
 									title="Delete"
 							>
-								<i class="far fa-trash-alt hover:text-red-700"></i>
+								<i class="far fa-trash-alt fa-fw hover:text-red-700"></i>
 							</button>
 						</form>
 					</td>
@@ -69,6 +87,7 @@
 	</table>
 
 	<?php include_once ROOT_DIR . '/app/views/includes/delete-list-item-modal.php'; ?>
+	<?php include_once ROOT_DIR . '/app/views/includes/mark-as-sold-modal.php'; ?>
 
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
