@@ -244,8 +244,12 @@ class Products extends BaseController {
 	}
 	
 	public function destroy() {
-		$this->db->delete('products', ['id' => $this->request->get('id') ?? 0]);
-		
+		$productId = intval($this->request->get('id', 0));
+		$this->db->delete('products', ['id' => $productId]);
+
+		// Delete product images
+		$this->db->delete('product_images', ['product_id' => $productId]);
+
 		$this->setSuccessMessage('The product has been deleted successfully!');
 		
 		$this->redirect('/products');
