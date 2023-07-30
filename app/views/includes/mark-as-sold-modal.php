@@ -1,9 +1,15 @@
 <dialog class="min-w-min max-w-lg p-4 rounded-md" data-mark-as-sold-modal>
 	<form method="dialog">
 		<div class="mb-5" data-message></div>
+		<div class="hidden w-full text-red-900 bg-red-100 px-4 py-2.5 rounded-md" data-error-message></div>
+		<div class="my-4" data-quantity-sold>
+			<label class="custom-input-label">Quantity sold: </label>
+			<input type="number" class="custom-input w-full">
+			<div class="text-sm text-blue-600">Current stocks: <span data-stocks></span></div>
+		</div>
 		<div class="flex flex-row items-center justify-end">
-			<button formmethod="dialog" type="submit" class="custom-secondary-button">Cancel</button>
-			<button type="submit" class="custom-primary-button ml-6" value="submit">Submit</button>
+			<button type="button" class="custom-secondary-button" data-cancel-button>Cancel</button>
+			<button type="submit" class="custom-primary-button ml-6" data-submit-button>Submit</button>
 		</div>
 	</form>
 </dialog>
@@ -23,29 +29,64 @@
 				const itemStocks = this.dataset.itemStocks;
 
 				const modal = document.querySelector('dialog[data-mark-as-sold-modal]');
+				const submitButton = modal.querySelector('button[data-submit-button]');
+				const cancelButton = modal.querySelector('button[data-cancel-button]');
 				const messageContainer = modal.querySelector('div[data-message]');
+				const errorMessageContainer = modal.querySelector('div[data-error-message]');
+				const currentStocksContainer = modal.querySelector('[data-stocks]');
+				const quantitySoldInput = modal.querySelector('input');
 
-				messageContainer.innerHTML = `
-					<div>Are you sure you want to mark <span class="font-bold px-1">${itemName}</span> as sold?</div>
-					<div class="my-4">
-						<label class="custom-input-label">Quantity sold: </label>
-						<input type="number" value="1" min="1" max="${itemStocks}" class="custom-input w-full" data-quantity-sold>
-						<span class="inline-block text-sm text-blue-600">Current stocks: ${itemStocks}</span>
-					</div>
-				`;
+				// Set message.
+				messageContainer.innerHTML = `<div>Are you sure you want to mark <span class="font-bold px-1">${itemName}</span> as sold?</div>`;
+				currentStocksContainer.textContent = itemStocks;
 
-				modal.addEventListener('close', function () {
-					if (this.returnValue === 'submit') {
-						const form = document.querySelector(`[data-mark-as-sold-form="${itemId}"]`);
-						const quantitySold = document.querySelector('input[data-quantity-sold]').value;
+				// Set default quantity to 1.
+				quantitySoldInput.value = 1;
 
-						form.querySelector('input[name="quantity"]').value = quantitySold;
+				// Show modal.
+				modal.showModal();
 
-						form.submit();
+				const showErrorMessage = function (message) {
+					errorMessageContainer.textContent = message;
+					errorMessageContainer.classList.remove('hidden');
+				};
+				const hideErrorMessage = () => errorMessageContainer.classList.add('hidden');
+
+				// Clear error message when user enter something on the quantity-sold input.
+				quantitySoldInput.addEventListener('keyup', function (e) {
+					if (!errorMessageContainer.classList.contains('hidden') && e.code !== 'Enter') {
+						hideErrorMessage();
 					}
 				});
 
-				modal.showModal();
+				submitButton.addEventListener('click', function (e) {
+					e.preventDefault();
+
+					const form = document.querySelector(`[data-mark-as-sold-form="${itemId}"]`);
+
+					if (quantitySoldInput.value <= 0) {
+						showErrorMessage('Quantity must be greater than zero.');
+						return false;
+					}
+
+					if (quantitySoldInput.value > itemStocks) {
+						showErrorMessage(`Quantity must be less than or equal to ${itemStocks}.`);
+						return false;
+					}
+
+					form.querySelector('input[name="quantity"]').value = quantitySoldInput.value;
+					form.submit();
+
+					modal.close();
+				});
+
+				cancelButton.addEventListener('click', function () {
+					modal.close();
+				});
+
+				modal.addEventListener('close', function () {
+					hideErrorMessage();
+				});
 
 				return false;
 			});
