@@ -309,7 +309,7 @@ class Products extends BaseController {
 		$priceComparisonOperator = trim($filters['price_comparison_operator']);
 
 		if ($searchStr !== '') {
-			$conditions[] = '(p.name LIKE "%' . $searchStr . '%" OR p.description LIKE "' . $searchStr . '")';
+			$conditions[] = '(p.name LIKE "%' . $searchStr . '%" OR p.description LIKE "%' . $searchStr . '%")';
 		}
 
 		if ($stocks !== ''
