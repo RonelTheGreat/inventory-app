@@ -81,7 +81,12 @@ class Products extends BaseController {
 	}
 
 	public function index() {
-		$products = $this->db->selectAll('products');
+		$searchParams = array_merge(
+			$this->getSearchParamDefaults(),
+			$this->request->get('searchParams', [])
+		);
+
+		$products = $this->getFilteredProducts($searchParams);
 		foreach ($products as $key => $product) {
 			$imagePreview = $this->db->selectOne('product_images', ['product_id' => intval($product['id'])]);
 			if ($imagePreview !== false) {
@@ -97,6 +102,8 @@ class Products extends BaseController {
 
 		$this->renderView('list', [
 			'products' => $products,
+			'searchParams' => $searchParams,
+			'comparisonOperatorOptions' => $this->getComparisonOperatorOptions(),
 		]);
 	}
 	
@@ -288,6 +295,51 @@ class Products extends BaseController {
 		$this->redirect('/products');
 	}
 
+	private function getFilteredProducts(array $filters): array
+	{
+		$validComparisonOperators = ['=', '>', '>=', '<', '<='];
+		$columns = ['p.*'];
+		$conditions = [];
+		$joins = [];
+
+		$searchStr = trim($filters['search_str']);
+		$stocks = trim($filters['stocks']);
+		$price = trim($filters['price']);
+		$stocksComparisonOperator = trim($filters['stocks_comparison_operator']);
+		$priceComparisonOperator = trim($filters['price_comparison_operator']);
+
+		if ($searchStr !== '') {
+			$conditions[] = '(p.name LIKE "%' . $searchStr . '%" OR p.description LIKE "' . $searchStr . '")';
+		}
+
+		if ($stocks !== ''
+			&& $stocksComparisonOperator !== ''
+			&& in_array($stocksComparisonOperator, $validComparisonOperators)
+		) {
+			$joins[] = 'LEFT JOIN stocks as s ON s.product_id = p.id';
+			$conditions[] = 's.stocks ' . $stocksComparisonOperator . ' ' . intval($stocks);
+			$columns[] = 's.stocks';
+		}
+
+		if ($price !== ''
+			&& $priceComparisonOperator !== ''
+			&& in_array($priceComparisonOperator, $validComparisonOperators)
+		) {
+			$conditions[] = 'p.price ' . $priceComparisonOperator . ' ' . floatval($price);
+		}
+
+		$joinStatement = !empty($joins) ? implode(' ', $joins) : '';
+		$whereStatement = !empty($conditions) ? ' WHERE ' . implode(' AND ', $conditions) : '';
+		$query = $this->db->raw('
+			SELECT ' . implode(',', $columns) . '
+			FROM products AS p
+			' . $joinStatement . '
+			' . $whereStatement . '
+		');
+
+		return $query->fetchAll();
+	}
+
 	protected function getCategoryOptions(): array {
 		$categoryOptions = ['0' => '-- Select Category --'];
 		$categories = $this->db->selectAll('categories');
@@ -309,6 +361,27 @@ class Products extends BaseController {
 		}
 
 		return $sizeOptions;
+	}
+
+	private function getComparisonOperatorOptions(): array {
+		return [
+			'' => '',
+			'>' => '&gt;',
+			'>=' => '&ge;',
+			'<' => '&lt;',
+			'<=' => '&le;',
+			'=' => '&equals;',
+		];
+	}
+
+	private function getSearchParamDefaults(): array {
+		return [
+			'search_str' => '',
+			'stocks' => '',
+			'stocks_comparison_operator' => '',
+			'price' => '',
+			'price_comparison_operator' => '',
+		];
 	}
 }
 

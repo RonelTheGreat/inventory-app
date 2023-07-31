@@ -95,5 +95,10 @@ class Database {
 		');
 		$query->execute($fields);
 	}
+
+	public function raw(string $query): bool|\PDOStatement
+	{
+		return $this->connection->query($query);
+	}
 }
 

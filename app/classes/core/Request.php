@@ -16,7 +16,7 @@ class Request {
 		$this->request[$key] = $value;
 	}
 
-	public function get(string $name, string $default = null): mixed {
+	public function get(string $name, mixed $default = null): mixed {
 		return $this->request[$name] ?? $default;
 	}
 
