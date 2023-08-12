@@ -9,9 +9,12 @@
 	<?php include_once ROOT_DIR . '/app/views/includes/alert-error.php'; ?>
 	<?php include_once ROOT_DIR . '/app/views/includes/alert-success.php'; ?>
 
-	<div class="bg-slate-100 p-4 mb-4 rounded-md">
+	<div class="bg-slate-50 p-4 mb-4 rounded-md">
 		<form action="/products" method="GET">
-			<div class="text-base mb-4">Filters</div>
+			<div class="text-lg mb-4">
+				<i class="fas fa-filter mr-1"></i>
+				<span>Filters</span>
+			</div>
 			<div class="flex flex-row items-end">
 				<div class="grow">
 					<label class="custom-input-label">Search name/description</label>
@@ -58,8 +61,12 @@
 				</div>
 			</div>
 			<div class="flex flex-row items-center justify-end mt-4">
+				<a href="/products" class="text-red-500 hover:text-slate-50 border-2 border-red-500 hover:bg-red-500 py-2 px-4 rounded-md mr-2">
+					<i class="fas fa-redo mr-1"></i>
+					<span>Reset</span>
+				</a>
 				<button type="submit" class="custom-primary-button">
-					<i class="fas fa-search"></i>
+					<i class="fas fa-search mr-1"></i>
 					<span>Search</span>
 				</button>
 			</div>
@@ -151,7 +158,10 @@
 		</table>
 	<?php else: ?>
 		<div class="flex flex-row items-center justify-center my-3">
-			<div class="w-full text-blue-900 bg-blue-200 p-4 rounded-md">No products found.</div>
+			<div class="w-full text-sky-900 bg-sky-200 p-4 rounded-md">
+				<i class="fas fa-info-circle mr-1"></i>
+				<span>No products found.</span>
+			</div>
 		</div>
 	<?php endif; ?>
 
