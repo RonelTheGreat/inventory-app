@@ -316,7 +316,7 @@ class Products extends BaseController {
 			&& $stocksComparisonOperator !== ''
 			&& in_array($stocksComparisonOperator, $validComparisonOperators)
 		) {
-			$joins[] = 'LEFT JOIN stocks as s ON s.product_id = p.id';
+			$joins[] = 'LEFT JOIN stocks AS s ON s.product_id = p.id';
 			$conditions[] = 's.stocks ' . $stocksComparisonOperator . ' ' . intval($stocks);
 			$columns[] = 's.stocks';
 		}
