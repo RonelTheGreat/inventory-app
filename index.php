@@ -37,6 +37,24 @@
 			exit;
 		}
 
+		$sessionDate = new DateTime($admin['session_last_update'], new DateTimeZone('Asia/Manila'));
+		$dateNow = new DateTime('now', new DateTimeZone('Asia/Manila'));
+		if ($dateNow->getTimestamp() - $sessionDate->getTimestamp() >= ADMIN_SESSION_TIMEOUT_IN_SECONDS) {
+			setcookie('asid', null);
+			header('Location: /login');
+			exit;
+		}
+
+		$db->update(
+			'admins',
+			[
+				'session_last_update' => $dateNow->format('Y-m-d H:i:s'),
+			],
+			[
+				'id' => $admin['id'],
+			],
+		);
+
 		if ($route['class'] === 'Login') {
 			header('Location: /products');
 			exit;

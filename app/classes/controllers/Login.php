@@ -4,6 +4,8 @@ namespace app\classes\controllers;
 
 use app\classes\core\Request;
 use app\classes\models\Database;
+use DateTime;
+use DateTimeZone;
 
 class Login extends BaseController {
 	public function __construct(Database $db, Request $request) {
@@ -65,7 +67,7 @@ class Login extends BaseController {
 		setcookie(
 			'asid',
 			$sessionId,
-			time() + 60 * 60, // Expires in 1 hour
+			time() + 60 * 60 * 24 * 7, // Expires in 7 days
 			'/',
 			'localhost', // TODO: change this in production
 			false // TODO: change this in production
@@ -74,7 +76,8 @@ class Login extends BaseController {
 		$this->db->update(
 			'admins',
 			[
-				'session_id' => $sessionId
+				'session_id' => $sessionId,
+				'session_last_update' => (new DateTime('now', new DateTimeZone('Asia/Manila')))->format('Y-m-d H:i:s'),
 			],
 			[
 				'id' => $admin['id'],
