@@ -86,6 +86,8 @@ class Products extends BaseController {
 			$this->request->get('searchParams', [])
 		);
 
+		$categoryOptions = $this->getCategoryOptions();
+
 		$products = $this->getFilteredProducts($searchParams);
 		foreach ($products as $key => $product) {
 			$imagePreview = $this->db->selectOne('product_images', ['product_id' => intval($product['id'])]);
@@ -95,6 +97,8 @@ class Products extends BaseController {
 				$products[$key]['imagePreview'] = '';
 			}
 
+			$products[$key]['categoryName'] = intval($product['category_id']) > 0 ? $categoryOptions[$product['category_id']] : '';
+
 			$stocks = $this->db->selectOne('stocks', ['product_id' => intval($product['id'])]);
 			if ($stocks !== false) $stocks = $stocks['stocks'];
 			$products[$key]['stocks'] = intval($stocks);
@@ -103,7 +107,7 @@ class Products extends BaseController {
 		$this->renderView('list', [
 			'products' => $products,
 			'searchParams' => $searchParams,
-			'categoryOptions' => $this->getCategoryOptions(),
+			'categoryOptions' => $categoryOptions,
 			'comparisonOperatorOptions' => $this->getComparisonOperatorOptions(),
 		]);
 	}

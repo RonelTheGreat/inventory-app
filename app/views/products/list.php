@@ -90,8 +90,9 @@
 			<thead>
 				<tr>
 					<th class="text-left p-2 border border-slate-300">Name</th>
+					<th class="text-left p-2 border border-slate-300">Category</th>
 					<th class="text-left p-2 border border-slate-300">Description</th>
-					<th class="p-2 border border-slate-300">Price</th>
+					<th class="text-right p-2 border border-slate-300">Price</th>
 					<th class="p-2 border border-slate-300">Stocks</th>
 					<th class="p-2 border border-slate-300">Actions</th>
 				</tr>
@@ -104,7 +105,7 @@
 								<?= $product['name']; ?>
 
 								<?php if (!$product['imagePreview']): ?>
-									<span class="text-xs text-white bg-orange-400 px-1 rounded-md">No image</span>
+									<span class="text-xs text-white bg-orange-400 px-1 rounded-lg">No image</span>
 								<?php endif; ?>
 							</a>
 
@@ -113,6 +114,14 @@
 									 data-product-preview="<?= $product['imagePreview']; ?>"
 								>
 								</div>
+							<?php endif; ?>
+						</td>
+
+						<td class="p-2 border border-slate-300">
+							<?php if ($product['categoryName']!== ''): ?>
+								<?= $product['categoryName']; ?>
+							<?php else: ?>
+								<span class="text-xs text-white bg-orange-400 px-1 rounded-lg">No category</span>
 							<?php endif; ?>
 						</td>
 
