@@ -3,13 +3,18 @@
 namespace app\classes\controllers;
 
 use app\classes\core\Request;
+use app\classes\InventoryLogger;
 use app\classes\models\Database;
 
 class Products extends BaseController {
 
+	private InventoryLogger $logger;
+
 	public function __construct(Database $db, Request $request)
 	{
 		parent::__construct($db, $request);
+
+		$this->logger = new InventoryLogger($db, $this->getCurrentAdminId());
 
 		$this->setValidationRules([
 			[
@@ -161,6 +166,14 @@ class Products extends BaseController {
 				'stocks' => $validated['stocks'],
 			],
 		);
+
+		// Insert inventory log.
+		$this->logger->log(
+			$newProductId,
+			InventoryLogger::ACTION_ADDED_PRODUCT,
+			0,
+			$validated['stocks']
+		);
 		
 		$this->setSuccessMessage('The product has been added successfully!');
 		
@@ -229,6 +242,9 @@ class Products extends BaseController {
 			$this->setErrorMessage('Product not found.');
 			$this->redirect('/products');
 		}
+
+		// Fetch product stocks (before updating).
+		$stock = $this->db->selectOne('stocks', ['product_id' => $product['id']]);
 		
 		// Update product.
 		$this->db->update(
@@ -281,6 +297,14 @@ class Products extends BaseController {
 			'stocks',
 			['stocks' => $validated['stocks']],
 			['product_id' => intval($product['id'])],
+		);
+
+		// Insert inventory log.
+		$this->logger->log(
+			$product['id'],
+			InventoryLogger::ACTION_UPDATED_PRODUCT,
+			$stock['stocks'],
+			$validated['stocks'],
 		);
 
 		$this->setSuccessMessage('The product has been edited successfully!');

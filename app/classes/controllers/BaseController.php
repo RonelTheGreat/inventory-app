@@ -87,5 +87,10 @@ class BaseController {
 	protected function getValidationRules(): array {
 		return $this->validationRules;
 	}
+
+	protected function getCurrentAdminId(): int {
+		$decoded = explode(':', base64_decode($_COOKIE['asid']));
+		return intval($decoded[1]);
+	}
 }
 

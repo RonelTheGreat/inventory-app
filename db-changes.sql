@@ -63,4 +63,15 @@ CREATE TABLE stocks (
 
 ALTER TABLE admins ADD COLUMN session_last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP AFTER session_id;
 
+CREATE TABLE inventory_logs (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    admin_id INT UNSIGNED,
+    product_id INT UNSIGNED,
+    `action` ENUM("sold", "added product", "updated product"),
+    qty INT UNSIGNED,
+    from_qty INT UNSIGNED,
+    to_qty INT UNSIGNED,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 

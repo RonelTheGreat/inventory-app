@@ -3,8 +3,19 @@
 namespace app\classes\controllers;
 
 use app\classes\core\Request;
+use app\classes\InventoryLogger;
+use app\classes\models\Database;
 
 class Stocks extends BaseController {
+
+	private InventoryLogger $logger;
+
+	public function __construct(Database $db, Request $request)
+	{
+		parent::__construct($db, $request);
+
+		$this->logger = new InventoryLogger($db, $this->getCurrentAdminId());
+	}
 
 	public function update() {
 		$mode = $this->request->get('mode');
@@ -42,6 +53,14 @@ class Stocks extends BaseController {
 			'stocks',
 			['stocks' => $newQuantity],
 			['id' => intval($result['id'])]
+		);
+
+		// Insert inventory log.
+		$this->logger->log(
+			$productId,
+			InventoryLogger::ACTION_SOLD,
+			intval($result['stocks']),
+			$newQuantity
 		);
 
 		$this->setSuccessMessage('Successfully update stocks!');
