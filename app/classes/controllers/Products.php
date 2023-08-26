@@ -171,6 +171,7 @@ class Products extends BaseController {
 		$this->logger->log(
 			$newProductId,
 			InventoryLogger::ACTION_ADDED_PRODUCT,
+			$validated['price'],
 			0,
 			$validated['stocks']
 		);
@@ -303,6 +304,7 @@ class Products extends BaseController {
 		$this->logger->log(
 			$product['id'],
 			InventoryLogger::ACTION_UPDATED_PRODUCT,
+			$validated['price'],
 			$stock['stocks'],
 			$validated['stocks'],
 		);

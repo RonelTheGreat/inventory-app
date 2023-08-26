@@ -35,11 +35,11 @@ class Stocks extends BaseController {
 
 		switch ($mode)
 		{
-			case 'mark_as_sold': $this->markAsSold($product['id'], $quantity); break;
+			case 'mark_as_sold': $this->markAsSold($product['id'], $quantity, $product['price']); break;
 		}
 	}
 
-	public function markAsSOld($productId, $quantity) {
+	public function markAsSOld(int $productId, int $quantity, float $price) {
 		$result = $this->db->selectOne('stocks', ['product_id' => $productId]);
 		if ($result === false || $result['stocks'] <= 0) {
 			$this->setErrorMessage('Cannot update stocks, please try again.');
@@ -59,6 +59,7 @@ class Stocks extends BaseController {
 		$this->logger->log(
 			$productId,
 			InventoryLogger::ACTION_SOLD,
+			$price,
 			intval($result['stocks']),
 			$newQuantity
 		);

@@ -21,7 +21,7 @@ class Dashboard extends BaseController {
 		if ($itemsSoldQuery !== false)
 		{
 			$itemsSold = intval($itemsSoldQuery['sold']);
-			$totalEarnings = floatval($itemsSoldQuery['total_earnings']);
+			$totalEarnings = number_format($itemsSoldQuery['total_earnings'], 2);
 		}
 
 		// Products count.
