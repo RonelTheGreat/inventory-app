@@ -300,14 +300,16 @@ class Products extends BaseController {
 			['product_id' => intval($product['id'])],
 		);
 
-		// Insert inventory log.
-		$this->logger->log(
-			$product['id'],
-			InventoryLogger::ACTION_UPDATED_PRODUCT,
-			$validated['price'],
-			$stock['stocks'],
-			$validated['stocks'],
-		);
+		// Insert inventory log. (only if it changes).
+		if ($stock['stocks'] !== $validated['stocks']) {
+			$this->logger->log(
+				$product['id'],
+				InventoryLogger::ACTION_UPDATED_PRODUCT,
+				$validated['price'],
+				$stock['stocks'],
+				$validated['stocks'],
+			);
+		}
 
 		$this->setSuccessMessage('The product has been edited successfully!');
 		
