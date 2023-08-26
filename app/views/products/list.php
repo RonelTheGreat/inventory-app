@@ -20,10 +20,22 @@
 					<label class="custom-input-label">Search name/description</label>
 					<input type="search" value="<?= $searchParams['search_str']; ?>" name="searchParams[search_str]" class="custom-input w-full">
 				</div>
+				<div class="w-1/5 ml-4">
+					<label class="custom-input-label">Category</label>
+					<?php $selectedId = 0; ?>
+					<select name="searchParams[category]" class="w-full custom-input">
+						<?php foreach ($categoryOptions as $id => $name) : ?>
+							<option value="<?= $id; ?>" <?= $searchParams['category'] == $id ? 'selected' : '' ?>>
+								<?= $name; ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+
 				<div class="ml-4">
 					<label id="stocks-label" class="custom-input-label">Stocks</label>
 					<div class="relative flex flex-row items-center">
-						<input type="number" value="<?= $searchParams['stocks']; ?>" name="searchParams[stocks]" class="custom-input pl-14">
+						<input type="number" value="<?= $searchParams['stocks']; ?>" name="searchParams[stocks]" class="custom-input w-52 pl-14">
 						<select value="<?= $searchParams['stocks_comparison_operator']; ?>" name="searchParams[stocks_comparison_operator]"
 								class="absolute left-px w-12 text-lg bg-slate-800 text-slate-200 px-2 py-1 rounded-l-md"
 								data-label-id="stocks-label"
@@ -43,7 +55,7 @@
 				<div class="ml-4">
 					<label id="price-label" class="custom-input-label">Price</label>
 					<div class="relative flex flex-row items-center">
-						<input type="number" step="0.01" value="<?= $searchParams['price'] ?? ''; ?>" name="searchParams[price]" class="custom-input pl-14">
+						<input type="number" step="0.01" value="<?= $searchParams['price'] ?? ''; ?>" name="searchParams[price]" class="custom-input w-52 pl-14">
 						<select value="<?= $searchParams['price_comparison_operator']; ?>" name="searchParams[price_comparison_operator]"
 								class="absolute left-px w-12 text-lg bg-slate-800 text-slate-200 px-2 py-1 rounded-l-md"
 								data-label-id="price-label"

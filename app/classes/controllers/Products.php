@@ -103,6 +103,7 @@ class Products extends BaseController {
 		$this->renderView('list', [
 			'products' => $products,
 			'searchParams' => $searchParams,
+			'categoryOptions' => $this->getCategoryOptions(),
 			'comparisonOperatorOptions' => $this->getComparisonOperatorOptions(),
 		]);
 	}
@@ -303,6 +304,7 @@ class Products extends BaseController {
 		$joins = [];
 
 		$searchStr = trim($filters['search_str']);
+		$category = intval($filters['category']);
 		$stocks = trim($filters['stocks']);
 		$price = trim($filters['price']);
 		$stocksComparisonOperator = trim($filters['stocks_comparison_operator']);
@@ -310,6 +312,10 @@ class Products extends BaseController {
 
 		if ($searchStr !== '') {
 			$conditions[] = '(p.name LIKE "%' . $searchStr . '%" OR p.description LIKE "%' . $searchStr . '%")';
+		}
+
+		if ($category > 0) {
+			$conditions[] = 'p.category_id = ' . $category;
 		}
 
 		if ($stocks !== ''
@@ -377,6 +383,7 @@ class Products extends BaseController {
 	private function getSearchParamDefaults(): array {
 		return [
 			'search_str' => '',
+			'category' => 0,
 			'stocks' => '',
 			'stocks_comparison_operator' => '',
 			'price' => '',
