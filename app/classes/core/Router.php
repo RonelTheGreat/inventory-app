@@ -40,6 +40,7 @@ class Router {
 		'get' => [
 			'/login' => 'index',
 			'/logout' => 'index',
+			'/dashboard' => 'index',
 		],
 		'post' => [
 			'/login' => 'login',

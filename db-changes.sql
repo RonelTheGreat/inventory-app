@@ -73,5 +73,6 @@ CREATE TABLE inventory_logs (
     to_qty INT UNSIGNED,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+ALTER TABLE inventory_logs ADD COLUMN price DECIMAL(19, 2) NOT NULL DEFAULT 0 AFTER `to_qty`;
 
 
