@@ -84,6 +84,6 @@ class Login extends BaseController {
 			]
 		);
 
-		$this->redirect('/products');
+		$this->redirect('/dashboard');
 	}
 }
