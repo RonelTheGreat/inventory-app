@@ -29,7 +29,7 @@ class Dashboard extends BaseController {
 		$productsCount = $productsCountQuery ? intval($productsCountQuery['count']) : 0;
 
 		$this->renderView('dashboard', [
-			'admin' => $admin['username'],
+			'admin' => $admin,
 			'itemsSold' => $itemsSold,
 			'totalEarnings' => $totalEarnings,
 			'productsCount' => $productsCount,

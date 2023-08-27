@@ -1,6 +1,6 @@
 <div class="grow pt-8 pr-8">
 	<div class="flex flex-row items-center mb-12">
-		<h1 class="text-2xl">Welcome back <?= $admin; ?>!</h1>
+		<h1 class="text-2xl">Welcome back <?= $admin['first_name']; ?>!</h1>
 	</div>
 
 	<div class="flex flex-row items-center">
