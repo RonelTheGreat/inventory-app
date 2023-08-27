@@ -130,7 +130,7 @@
 						</td>
 
 						<td class="w-24 text-right p-2 border border-slate-300">
-							<?= $product['price']; ?>
+							<?= number_format($product['price'], 2); ?>
 						</td>
 
 						<td class="w-16 text-right p-2 border border-slate-300">
