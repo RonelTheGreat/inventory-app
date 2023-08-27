@@ -20,6 +20,13 @@
 		</a>
 	</div>
 
+	<div class="px-4 py-3 hover:bg-slate-900/10">
+		<a href="/admins" class="w-100 block">
+			<i class="fas fa-users-cog"></i>
+			<span class="ml-1">Admins</span>
+		</a>
+	</div>
+
 	<div class="px-4 py-3 hover:bg-slate-900/10 mt-10">
 		<a href="/logout" class="w-100 block">
 			<i class="fas fa-sign-out-alt"></i>

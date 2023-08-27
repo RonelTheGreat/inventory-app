@@ -197,7 +197,6 @@ class Products extends BaseController {
 		if ($product === false) {
 			$this->setErrorMessage('Product not found.');
 			$this->redirect('/products');
-			exit;
 		}
 
 		// Fetch images.

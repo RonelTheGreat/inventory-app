@@ -75,4 +75,6 @@ CREATE TABLE inventory_logs (
 );
 ALTER TABLE inventory_logs ADD COLUMN price DECIMAL(19, 2) NOT NULL DEFAULT 0 AFTER `to_qty`;
 
-
+ALTER TABLE admins ADD first_name VARCHAR(255) NOT NULL DEFAULT '' AFTER username;
+ALTER TABLE admins ADD last_name VARCHAR(255) NOT NULL DEFAULT '' AFTER first_name;
+ALTER TABLE admins ADD force_password_change TINYINT UNSIGNED NOT NULL DEFAULT 0 AFTER session_last_update;
