@@ -73,7 +73,7 @@
 				</div>
 			</div>
 			<div class="flex flex-row items-center justify-end mt-4">
-				<a href="/products" class="text-red-500 hover:text-slate-50 border-2 border-red-500 hover:bg-red-500 py-2 px-4 rounded-md mr-2">
+				<a href="/products?reset=1" class="text-red-500 hover:text-slate-50 border-2 border-red-500 hover:bg-red-500 py-2 px-4 rounded-md mr-2">
 					<i class="fas fa-redo mr-1"></i>
 					<span>Reset</span>
 				</a>

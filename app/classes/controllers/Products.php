@@ -3,6 +3,7 @@
 namespace app\classes\controllers;
 
 use app\classes\core\Request;
+use app\classes\core\Session;
 use app\classes\InventoryLogger;
 use app\classes\models\Database;
 
@@ -10,9 +11,9 @@ class Products extends BaseController {
 
 	private InventoryLogger $logger;
 
-	public function __construct(Database $db, Request $request)
+	public function __construct(Database $db, Request $request, Session $session)
 	{
-		parent::__construct($db, $request);
+		parent::__construct($db, $request, $session);
 
 		$this->logger = new InventoryLogger($db, $this->getCurrentAdminId());
 
@@ -86,9 +87,16 @@ class Products extends BaseController {
 	}
 
 	public function index() {
+		$searchParamsRequest = $this->request->get('searchParams', []);
+		if (empty($searchParamsRequest) && intval($this->request->get('reset', 0)) <= 0) {
+			$searchParamsRequest = $this->session->get('searchParams');
+		} else {
+			$this->session->set('searchParams', $searchParamsRequest);
+		}
+
 		$searchParams = array_merge(
 			$this->getSearchParamDefaults(),
-			$this->request->get('searchParams', [])
+			$searchParamsRequest
 		);
 
 		$categoryOptions = $this->getCategoryOptions();

@@ -64,7 +64,7 @@
 	require_once $route['controllerFile'];
 
 	$className = '\\app\\classes\\controllers\\' . $route['class'];
-	$controllerInstance = new $className($db, $request);
+	$controllerInstance = new $className($db, $request, $session);
 
 	$controllerInstance->setViewLayout($controllerInstance instanceof Login ? 'login' : 'default');
 	$controllerInstance->setViewDirectoryName(strtolower($route['class']));
