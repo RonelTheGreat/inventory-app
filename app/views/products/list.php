@@ -89,6 +89,7 @@
 		<table class="w-full table-auto border-collapse border border-slate-500">
 			<thead>
 				<tr>
+					<th class="text-left p-2 border border-slate-300">Priority</th>
 					<th class="text-left p-2 border border-slate-300">Name</th>
 					<th class="text-left p-2 border border-slate-300">Category</th>
 					<th class="text-left p-2 border border-slate-300">Description</th>
@@ -100,6 +101,7 @@
 			<tbody>
 				<?php foreach ($products as $product): ?>
 					<tr class="hover:bg-slate-100">
+						<td class="p-2 border border-slate-300"><?= $product['priority']; ?></td>
 						<td class="relative group p-2 border border-slate-300">
 							<a href="/products/<?= $product['id']; ?>/edit" class="block w-100 hover:underline">
 								<?= $product['name']; ?>

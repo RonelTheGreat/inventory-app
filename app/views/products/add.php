@@ -11,9 +11,15 @@
 		<?php include_once ROOT_DIR . '/app/views/includes/alert-error.php'; ?>
 		<?php include_once ROOT_DIR . '/app/views/includes/alert-success.php'; ?>
 
-		<div class="mb-4">
-			<label class="custom-input-label">Name</label>
-			<input type="text" name="name" value="<?= $request['old']['name'] ?? ''; ?>" class="w-full custom-input">
+		<div class="w-full flex flex-row items-center space-x-4 mb-4">
+			<div class="w-1/4">
+				<label class="custom-input-label">Priority</label>
+				<input type="number" name="priority" value="<?= $request['old']['priority'] ?? ''; ?>" class="w-full custom-input">
+			</div>
+			<div class="w-full">
+				<label class="custom-input-label">Name</label>
+				<input type="text" name="name" value="<?= $request['old']['name'] ?? ''; ?>" class="w-full custom-input">
+			</div>
 		</div>
 
 		<div class="w-full flex flex-row items-center space-x-4 mb-4">

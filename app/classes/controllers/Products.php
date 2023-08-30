@@ -21,6 +21,11 @@ class Products extends BaseController {
 
 		$this->setValidationRules([
 			[
+				'name' => 'priority',
+				'type' => 'integer',
+				'required' => false,
+			],
+			[
 				'name' => 'name',
 				'type' => 'string',
 				'required' => true,
@@ -262,6 +267,7 @@ class Products extends BaseController {
 			[
 				'name' => $validated['name'],
 				'category_id' => $validated['category'],
+				'priority' => $validated['priority'],
 				'description' => $validated['description'],
 				'price' => $validated['price'],
 				'size' => $validated['size'],
@@ -382,6 +388,7 @@ class Products extends BaseController {
 			FROM products AS p
 			' . $joinStatement . '
 			' . $whereStatement . '
+			ORDER BY p.priority
 		');
 
 		return $query->fetchAll();
