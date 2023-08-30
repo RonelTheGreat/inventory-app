@@ -10,7 +10,7 @@
 	<?php include_once ROOT_DIR . '/app/views/includes/alert-success.php'; ?>
 
 	<div class="bg-slate-50 p-4 mb-4 rounded-md">
-		<form action="/products" method="GET">
+		<form action="/products" method="GET" name="filtersForm">
 			<div class="text-lg mb-4">
 				<i class="fas fa-filter mr-1"></i>
 				<span>Filters</span>
@@ -217,6 +217,13 @@
 					});
 
 					item.dispatchEvent(new Event('change'));
+				});
+
+			// On select category (filter), update search results.
+			document
+				.querySelector('select[name="searchParams[category]"]')
+				.addEventListener('change', function () {
+					document.querySelector('form[name="filtersForm"]').submit();
 				});
 		});
 	</script>
