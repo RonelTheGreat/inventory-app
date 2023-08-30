@@ -15,6 +15,8 @@ class BaseController {
 	protected Database $db;
 	protected Request $request;
 	protected Session $session;
+
+	private string $activeSidebarMenu = '';
 	
 	public function __construct(Database $db, Request $request, Session $session) {
 		$this->db = $db;
@@ -45,6 +47,8 @@ class BaseController {
 		$request['old'] = $this->request->getOld();
 
 		extract($data, EXTR_OVERWRITE);
+
+		$activeSidebarMenu = $this->getActiveSidebarMenu();
 		
 		$view = $this->viewsDirectory . '/' . $viewName . '.php';
 		
@@ -94,6 +98,14 @@ class BaseController {
 	protected function getCurrentAdminId(): int {
 		$decoded = explode(':', base64_decode($_COOKIE['asid']));
 		return intval($decoded[1]);
+	}
+
+	protected function setActiveSidebarMenu(string $name) {
+		$this->activeSidebarMenu = $name;
+	}
+
+	protected function getActiveSidebarMenu(): string {
+		return $this->activeSidebarMenu;
 	}
 }
 

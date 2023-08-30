@@ -12,6 +12,8 @@ class Categories extends BaseController {
 	{
 		parent::__construct($db, $request, $session);
 
+		$this->setActiveSidebarMenu('categories');
+
 		$this->setValidationRules([
 			[
 				'name' => 'name',

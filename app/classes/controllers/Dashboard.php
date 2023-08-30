@@ -2,9 +2,19 @@
 
 namespace app\classes\controllers;
 
+use app\classes\core\Request;
+use app\classes\core\Session;
 use app\classes\InventoryLogger;
+use app\classes\models\Database;
 
 class Dashboard extends BaseController {
+
+	public function __construct(Database $db, Request $request, Session $session)
+	{
+		parent::__construct($db, $request, $session);
+
+		$this->setActiveSidebarMenu('dashboard');
+	}
 
 	public function index() {
 		$admin = $this->db->selectOne('admins', ['id' => $this->getCurrentAdminId()]);

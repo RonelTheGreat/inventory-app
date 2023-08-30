@@ -12,6 +12,8 @@ class Admins Extends BaseController {
 	{
 		parent::__construct($db, $request, $session);
 
+		$this->setActiveSidebarMenu('admins');
+
 		$this->setValidationRules([
 			[
 				'name' => 'first_name',

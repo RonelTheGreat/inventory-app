@@ -17,6 +17,8 @@ class Products extends BaseController {
 
 		$this->logger = new InventoryLogger($db, $this->getCurrentAdminId());
 
+		$this->setActiveSidebarMenu('products');
+
 		$this->setValidationRules([
 			[
 				'name' => 'name',
