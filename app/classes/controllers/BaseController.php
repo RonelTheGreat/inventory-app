@@ -3,6 +3,7 @@
 namespace app\classes\controllers;
 
 use app\classes\core\Request;
+use app\classes\core\Session;
 use app\classes\models\Database;
 
 class BaseController {
@@ -13,10 +14,12 @@ class BaseController {
 	
 	protected Database $db;
 	protected Request $request;
+	protected Session $session;
 	
-	public function __construct(Database $db, Request $request) {
+	public function __construct(Database $db, Request $request, Session $session) {
 		$this->db = $db;
 		$this->request = $request;
+		$this->session = $session;
 	}
 	
 	public function setViewDirectoryName(string $viewDirectoryName) {
