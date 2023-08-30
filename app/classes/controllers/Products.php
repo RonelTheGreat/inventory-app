@@ -89,7 +89,7 @@ class Products extends BaseController {
 	public function index() {
 		$searchParamsRequest = $this->request->get('searchParams', []);
 		if (empty($searchParamsRequest) && intval($this->request->get('reset', 0)) <= 0) {
-			$searchParamsRequest = $this->session->get('searchParams');
+			$searchParamsRequest = $this->session->get('searchParams', []);
 		} else {
 			$this->session->set('searchParams', $searchParamsRequest);
 		}
