@@ -3,13 +3,14 @@
 namespace app\classes\controllers;
 
 use app\classes\core\Request;
+use app\classes\core\Session;
 use app\classes\models\Database;
 use DateTime;
 use DateTimeZone;
 
 class Login extends BaseController {
-	public function __construct(Database $db, Request $request) {
-		parent::__construct($db, $request);
+	public function __construct(Database $db, Request $request, Session $session) {
+		parent::__construct($db, $request, $session);
 
 		$this->setValidationRules([
 			[
