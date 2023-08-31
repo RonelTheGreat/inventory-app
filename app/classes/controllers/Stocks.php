@@ -3,6 +3,7 @@
 namespace app\classes\controllers;
 
 use app\classes\core\Request;
+use app\classes\core\Session;
 use app\classes\InventoryLogger;
 use app\classes\models\Database;
 
@@ -10,9 +11,9 @@ class Stocks extends BaseController {
 
 	private InventoryLogger $logger;
 
-	public function __construct(Database $db, Request $request)
+	public function __construct(Database $db, Request $request, Session $session)
 	{
-		parent::__construct($db, $request);
+		parent::__construct($db, $request, $session);
 
 		$this->logger = new InventoryLogger($db, $this->getCurrentAdminId());
 	}

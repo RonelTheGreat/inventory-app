@@ -26,6 +26,12 @@
 				'label' => 'Admins',
 			],
 			[
+				'name' => 'inventoryLogs',
+				'url' => '/inventory-logs',
+				'icon' => 'fas fa-file-alt',
+				'label' => 'Inventory Logs',
+			],
+			[
 				'name' => 'logout',
 				'url' => '/logout',
 				'icon' => 'fas fa-sign-out-alt',

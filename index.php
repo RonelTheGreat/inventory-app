@@ -67,7 +67,7 @@
 	$controllerInstance = new $className($db, $request, $session);
 
 	$controllerInstance->setViewLayout($controllerInstance instanceof Login ? 'login' : 'default');
-	$controllerInstance->setViewDirectoryName(strtolower($route['class']));
+	$controllerInstance->setViewDirectoryName($route['viewDirectoryName']);
 
 	call_user_func([$controllerInstance, $route['method']]);
 

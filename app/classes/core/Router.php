@@ -65,6 +65,7 @@ class Router {
 				'class' => $class,
 				'method' => self::$specialRoutes[$method][$urlParts['path']],
 				'controllerFile' => $controllerFile,
+				'viewDirectoryName' => $urlPathParts[1],
 			];
 		}
 
@@ -80,7 +81,9 @@ class Router {
 			$pattern = '/^' . $pattern . '$/';
 
 			if (preg_match($pattern, $mockUrlPath, $matches)) {
-				$class = ucwords($urlPathParts[1]);
+				// Remove hyphens and make every first letter uppercase.
+				$rootUrl = str_replace('-', ' ', $urlPathParts[1]);
+				$class = str_replace(' ', '', ucwords($rootUrl));
 
 				// No controller defined.
 				$controllerFile = ROOT_DIR . '/app/classes/controllers/' . $class . '.php';
@@ -89,6 +92,7 @@ class Router {
 				// Set route data.
 				$routeData['class'] = $class;
 				$routeData['method'] = $handler;
+				$routeData['viewDirectoryName'] = $urlPathParts[1];
 				$routeData['controllerFile'] = $controllerFile;
 
 				// Extract and set dynamic parameters from the route.
